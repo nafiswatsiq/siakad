@@ -1,3 +1,13 @@
+# Instalasi
+- clone sperti biasa
+- setting .env seperti biasa
+- ```composer install```
+- ```npm install```
+- ```php artisan key:generate```
+- ```php artisan migrate --seed```
+- ```php artisan shield:generate --all --ignore-existing-policies```
+- ```php artisan shield:super-admin --user=1```
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
