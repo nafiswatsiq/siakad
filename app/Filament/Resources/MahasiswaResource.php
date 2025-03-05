@@ -27,6 +27,7 @@ class MahasiswaResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
+                    ->label(label: 'Nama')
                     ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
                     ->required(),
                 Forms\Components\Select::make('kelas_id')
@@ -34,23 +35,28 @@ class MahasiswaResource extends Resource
                     ->options(options: Kelas::get()->pluck('nama', 'id'))
                     ->required(),
                 Forms\Components\Select::make('prodi_id')
+                    ->label('Prodi')
                     ->options(Prodi::get()->pluck('nama', 'id'))
                     ->required(),
                 Forms\Components\Select::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
                     ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
                     ->required(),
                 Forms\Components\TextInput::make('nim')
+                    ->label('NIM')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('semester')
                     ->required()
                     ->numeric(),
                 Forms\Components\DatePicker::make('tanggal_lahir')
+                    ->label('Tanggal Lahir')
                     ->required(),
                 Forms\Components\TextInput::make('alamat')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('no_tlp')
+                    ->label('No Telepon')
                     ->required()
                     ->maxLength(255),
             ]);
