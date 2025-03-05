@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\KRSResource\Pages;
+namespace App\Filament\Resources\NilaiResource\Pages;
 
-use App\Filament\Resources\KRSResource;
+use App\Filament\Resources\NilaiResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManageKRS extends ManageRecords
+class ManageNilais extends ManageRecords
 {
-    protected static string $resource = KRSResource::class;
+    protected static string $resource = NilaiResource::class;
 
     protected function getHeaderActions(): array
     {
