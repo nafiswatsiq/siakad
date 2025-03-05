@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\NilaiResource\Pages;
+namespace App\Filament\Resources\MatkulResource\Pages;
 
-use App\Filament\Resources\NilaiResource;
+use App\Filament\Resources\MatkulResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
-class ManageNilais extends ManageRecords
+class ManageMatkuls extends ManageRecords
 {
-    protected static string $resource = NilaiResource::class;
+    protected static string $resource = MatkulResource::class;
 
     protected function getHeaderActions(): array
     {

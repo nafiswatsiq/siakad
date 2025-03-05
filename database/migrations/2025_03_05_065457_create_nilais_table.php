@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('nilais', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Mahasiswa::class, 'id_mahasiswa')->constrained();
+            $table->foreignIdFor(Mahasiswa::class, 'mahasiswa_id')->constrained();
             $table->float('ips');
             $table->float('ipk');
             $table->integer('semester');

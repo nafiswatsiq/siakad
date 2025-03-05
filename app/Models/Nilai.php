@@ -7,15 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Nilai extends Model
 {
     protected $fillable = [
-        'id_mahasiswa',
+        'mahasiswa_id',
         'ips',
         'ipk',
         'semester',
         'tahun_ajaran',
     ];
 
-    public function user()
+    public function mahasiswa()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Mahasiswa::class);
     }
 }
