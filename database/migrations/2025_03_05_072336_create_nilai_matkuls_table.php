@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('nilai_matkuls', function (Blueprint $table) {
             $table->id();
-            $table->id();
             $table->foreignIdFor(Mahasiswa::class)->constrained();
             $table->foreignIdFor(Matkul::class)->constrained();
             $table->decimal('nilai', 5, 2);
