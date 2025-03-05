@@ -17,4 +17,8 @@ class Mahasiswa extends Model
         'alamat',
         'no_tlp',
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
