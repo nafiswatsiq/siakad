@@ -23,9 +23,16 @@ class MahasiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('mahasiswa_id')
+                    ->label('Nama Mahasiswa')
+                    ->relationship('User', 'name')
+                    ->placeholder('Pilih Nama Mahasiswa')
+                    ->required(),
+                Forms\Components\Select::make('kelas_id')
+                    ->label('Nama Kelas')
+                    ->relationship('Kelas', 'nama')
+                    ->placeholder('Pilih Kelas')
+                    ->required(),
                 Forms\Components\TextInput::make('kelas_id')
                     ->required()
                     ->numeric(),
