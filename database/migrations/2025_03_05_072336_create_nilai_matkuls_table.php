@@ -19,7 +19,6 @@ return new class extends Migration
             $table->foreignIdFor(Matkul::class)->constrained();
             $table->decimal('nilai', 5, 2);
             $table->timestamps();
-            $table->timestamps();
         });
     }
 
