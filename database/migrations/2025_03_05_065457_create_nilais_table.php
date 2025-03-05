@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Mahasiswa;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,10 +12,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('k_r_s', function (Blueprint $table) {
+        Schema::create('nilais', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Mahasiswa::class, 'id_mahasiswa')->constrained();
+            $table->float('ips');
+            $table->float('ipk');
+            $table->integer('semester');
+            $table->string('tahun_ajaran');
             $table->timestamps();
-            $table->foreignIdFor();
         });
     }
 
@@ -23,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('k_r_s');
+        Schema::dropIfExists('nilais');
     }
 };
