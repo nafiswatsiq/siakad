@@ -25,9 +25,11 @@ class KelasResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama')
+                    ->label('Nama Kelas')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('dosen_id')
+                    ->label('Nama Dosen')
                     // ->relationship('dosen', 'n')
                     ->options(dosen::get()->pluck('user.name', 'id'))
                     ->required(),
@@ -42,8 +44,10 @@ class KelasResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
+                    ->label('Nama Kelas')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('dosen.user.name')
+                    ->label('Dosen')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tahun_ajaran')
                     ->searchable(),
