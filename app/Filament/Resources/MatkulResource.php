@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MatkulResource\Pages;
 use App\Filament\Resources\MatkulResource\RelationManagers;
+use App\Models\dosen;
 use App\Models\Matkul;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -38,12 +39,17 @@ class MatkulResource extends Resource
                 Forms\Components\TextInput::make('sesi')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('ruangan_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('dosen_id')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('ruangan_id')
+                    ->label('Ruangan')
+                    ->relationship('ruangan', 'kode_ruangan')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->kode_ruangan} - {$record->nama}")
+                    ->required(),
+    
+                Forms\Components\Select::make('dosen_id')
+                    ->label('Dosen')
+                    ->options(dosen::get()->pluck('user.name', 'id'))
+                    ->required(),
+              
             ]);
     }
 
@@ -63,10 +69,11 @@ class MatkulResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sesi')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('ruangan_id')
+                Tables\Columns\TextColumn::make('ruangan.nama')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('dosen_id')
+                Tables\Columns\TextColumn::make('dosen.user.name')
+                    ->label('Dosen')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

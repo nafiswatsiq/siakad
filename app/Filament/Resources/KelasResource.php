@@ -42,8 +42,10 @@ class KelasResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
+                    ->label('Kelas')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('dosen.user.name')
+                    ->label('Nama Dosen')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tahun_ajaran')
                     ->searchable(),

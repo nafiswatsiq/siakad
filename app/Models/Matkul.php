@@ -10,17 +10,17 @@ class Matkul extends Model
         'sks',
         'kuota',
         'sesi',
-        'id_ruangan',
-        'id_dosen',
+        'ruangan_id',
+        'dosen_id',
     ];
 
     public function ruangan()
     {
-        return $this->belongsTo(Ruangan::class, 'id_ruangan');
+        return $this->belongsTo(Ruangan::class, 'ruangan_id');
     }
 
     public function dosen()
     {
-        return $this->belongsTo(dosen::class, 'id_dosen');
+        return $this->belongsTo(dosen::class, 'dosen_id');
     }
 }

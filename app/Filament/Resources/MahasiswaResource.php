@@ -4,7 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MahasiswaResource\Pages;
 use App\Filament\Resources\MahasiswaResource\RelationManagers;
+use App\Models\Kelas;
 use App\Models\Mahasiswa;
+use App\Models\Prodi;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,18 +26,19 @@ class MahasiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('kelas_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('prodi_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('jenis_kelamin')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('user_id')
+                    ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('kelas_id')
+                    ->label(label: 'Kelas')
+                    ->options(options: Kelas::get()->pluck('nama', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('prodi_id')
+                    ->options(Prodi::get()->pluck('nama', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('jenis_kelamin')
+                    ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
+                    ->required(),
                 Forms\Components\TextInput::make('nim')
                     ->required()
                     ->maxLength(255),
@@ -56,14 +60,14 @@ class MahasiswaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Nama')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('kelas_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('kelas.nama')
+                    ->label('Kelas')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('prodi_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('prodi.nama')
+                    ->label('Prodi')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_kelamin')
                     ->searchable(),
