@@ -17,6 +17,7 @@ class Mahasiswa extends Model
         'alamat',
         'no_tlp',
     ];
+<<<<<<< HEAD
     public function User()
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -31,4 +32,10 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Prodi::class, 'prodi_id');
     }
+=======
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+>>>>>>> 4a430c8900a7a36c32af7c2cc1dbfa52b0e610f8
 }
