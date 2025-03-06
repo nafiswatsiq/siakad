@@ -17,9 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Mahasiswa::class)->constrained();
             $table->foreignIdFor(dosen::class)->constrained();
+            $table->string('perihal');
             $table->string('status')->nullable();
             $table->string('log')->nullable();
-            $table->string('jadwal');
+            $table->dateTime('jadwal');
             $table->timestamps();
         });
     }

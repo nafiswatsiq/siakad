@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama');
             $table->foreignIdFor(dosen::class)->constrained();
             $table->string('tahun_ajaran');
+            $table->string('kuota_kelas');
             $table->timestamps();
         });
     }
