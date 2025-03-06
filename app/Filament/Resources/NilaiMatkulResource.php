@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\NilaiMatkulResource\Pages;
 use App\Filament\Resources\NilaiMatkulResource\RelationManagers;
+use App\Models\Mahasiswa;
 use App\Models\NilaiMatkul;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -25,9 +26,7 @@ class NilaiMatkulResource extends Resource
             ->schema([
                 Forms\Components\Select::make('mahasiswa_id')
                     ->label('Nama Mahasiswa')
-                    ->options(function () {
-                        return \App\Models\Mahasiswa::with('user')->get()->pluck('user.name', 'id');
-                    })
+                    ->options(Mahasiswa::with('user')->get()->pluck('user.name', 'id'))
                     ->required(),
                 Forms\Components\Select::make('matkul_id')
                     ->label('Mata Kuliah')
