@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\dosen;
+use App\Models\Mahasiswa;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,12 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kelas', function (Blueprint $table) {
+        Schema::create('nilais', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->foreignIdFor(dosen::class)->constrained();
+            $table->foreignIdFor(Mahasiswa::class, 'mahasiswa_id')->constrained();
+            $table->float('ips');
+            $table->float('ipk');
+            $table->integer('semester');
             $table->string('tahun_ajaran');
-            $table->string('kuota_kelas');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kelas');
+        Schema::dropIfExists('nilais');
     }
 };

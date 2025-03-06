@@ -10,6 +10,7 @@ class Kelas extends Model
         'nama',
         'dosen_id',
         'tahun_ajaran',
+        'kuota_kelas',
     ];
 
     public function dosen()

@@ -24,15 +24,19 @@ class DosenResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nip')
+                    ->label('NIP')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('user_id')
+                    ->label('Nama')
                     ->relationship('user', 'name')
                     ->required(),
                 Forms\Components\TextInput::make('alamat')
+                    ->label('Alamat')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('no_tlp')
+                    ->label('No Telepon')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -43,13 +47,17 @@ class DosenResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nip')
+                    ->label('NIP')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('user.name')
+                    ->label('Nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('alamat')
+                    ->label('Alamat')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('no_tlp')
+                    ->label('No Telepon')
                     ->searchable(),
             ])
             ->filters([
