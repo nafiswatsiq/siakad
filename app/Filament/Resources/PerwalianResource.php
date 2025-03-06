@@ -16,6 +16,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Filament\Forms\Get;
 
 class PerwalianResource extends Resource
 {
@@ -69,14 +70,6 @@ class PerwalianResource extends Resource
                         'Akademik' => 'Akademik',
                         'Bimbingan' => 'Bimbingan',
                     ]),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->hidden()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('log')
-                    ->required()
-                    ->hidden()
-                    ->maxLength(255),
                 Forms\Components\DateTimePicker::make('jadwal')
                     ->required(),
             ]);
@@ -96,6 +89,10 @@ class PerwalianResource extends Resource
                     ->searchable(),  
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'diterima' => 'success',
+                        'ditolak' => 'danger',
+                    })
                     ->searchable(),
                 Tables\Columns\TextColumn::make('log')
                     ->searchable(),
@@ -114,7 +111,19 @@ class PerwalianResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                ->form([
+                    Forms\Components\Select::make('status')
+                    ->live()
+                    ->options([
+                        'diterima' => 'Terima',
+                        'ditolak' => 'Tolak'
+                    ])
+                    ->required(),
+                    Forms\Components\TextInput::make('log')
+                        ->visible(fn (Get $get) => $get('status') === 'diterima')
+                        ->maxLength(255),
+                ]),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
