@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\DosenResource\Pages;
 use App\Filament\Resources\DosenResource\RelationManagers;
 use App\Models\Dosen;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -29,7 +30,7 @@ class DosenResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('user_id')
                     ->label('Nama')
-                    ->relationship('user', 'name')
+                    ->options(User::role('dosen')->get()->pluck('name', 'id'))
                     ->required(),
                 Forms\Components\TextInput::make('alamat')
                     ->label('Alamat')
