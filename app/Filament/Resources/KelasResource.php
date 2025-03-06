@@ -25,13 +25,18 @@ class KelasResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama')
+                    ->label('Nama Kelas')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\Select::make('dosen_id')
+                    ->label('Nama Dosen')
                     // ->relationship('dosen', 'n')
                     ->options(dosen::get()->pluck('user.name', 'id'))
                     ->required(),
                 Forms\Components\TextInput::make('tahun_ajaran')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('kuota_kelas')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -48,6 +53,9 @@ class KelasResource extends Resource
                     ->label('Nama Dosen')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('tahun_ajaran')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kuota_kelas')
+                    ->label('Kuota Kelas')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

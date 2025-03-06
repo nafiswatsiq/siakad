@@ -26,9 +26,9 @@ class NilaiResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('mahasiswa_id')
-                ->label('Nama Mahasiswa')
-                ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))   
-                ->required(),
+                    ->label('Nama Mahasiswa')
+                    ->options(User::role('mahasiswa')->get()->pluck('name', 'mahasiswa.id'))
+                    ->required(),
                 Forms\Components\TextInput::make('ips')
                     ->label('IPS')
                     ->required()
