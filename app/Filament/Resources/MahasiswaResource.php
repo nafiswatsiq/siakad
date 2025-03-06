@@ -4,7 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MahasiswaResource\Pages;
 use App\Filament\Resources\MahasiswaResource\RelationManagers;
+use App\Models\Kelas;
 use App\Models\Mahasiswa;
+use App\Models\Prodi;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -23,30 +26,37 @@ class MahasiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('kelas_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('prodi_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('jenis_kelamin')
-                    ->required()
-                    ->maxLength(255),
+                Forms\Components\Select::make('user_id')
+                    ->label(label: 'Nama')
+                    ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('kelas_id')
+                    ->label(label: 'Kelas')
+                    ->options(options: Kelas::get()->pluck('nama', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('prodi_id')
+                    ->label('Prodi')
+                    ->options(Prodi::get()->pluck('nama', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
+                    ->required(),
                 Forms\Components\TextInput::make('nim')
+                    ->label('NIM')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('semester')
                     ->required()
                     ->numeric(),
                 Forms\Components\DatePicker::make('tanggal_lahir')
+                    ->label('Tanggal Lahir')
                     ->required(),
                 Forms\Components\TextInput::make('alamat')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('no_tlp')
+                    ->label('No Telepon')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -56,14 +66,14 @@ class MahasiswaResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Nama')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('kelas_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('kelas.nama')
+                    ->label('Kelas')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('prodi_id')
-                    ->numeric()
+                Tables\Columns\TextColumn::make('prodi.nama')
+                    ->label('Prodi')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('jenis_kelamin')
                     ->searchable(),
