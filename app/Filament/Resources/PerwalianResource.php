@@ -126,7 +126,8 @@ class PerwalianResource extends Resource
                 ])
                 ->action(function(Model $record, $data) {
                     Perwalian::find($record->id)->update($data);
-                }),
+                })
+                ->visible(fn () => User::find(Auth::id())->hasRole('dosen_wali')),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
 
