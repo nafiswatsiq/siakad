@@ -21,4 +21,5 @@ class NilaiMatkul extends Model
     {
         return $this->belongsTo(Matkul::class, 'matkul_id');
     }
+
 }

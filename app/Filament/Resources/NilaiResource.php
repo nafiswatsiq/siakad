@@ -21,7 +21,7 @@ class NilaiResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+   /* public static function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -46,7 +46,7 @@ class NilaiResource extends Resource
                     ->required()
                     ->maxLength(255),
             ]);
-    }
+    }*/
 
     public static function table(Table $table): Table
     {
@@ -55,43 +55,43 @@ class NilaiResource extends Resource
                 Tables\Columns\TextColumn::make('mahasiswa.user.name')
                     ->label('Nama Mahasiswa')
                     ->sortable(),
+    
                 Tables\Columns\TextColumn::make('ips')
                     ->label('IPS')
+                    ->getStateUsing(fn (Nilai $record) => $record->hitungIps())
                     ->numeric()
                     ->sortable(),
+    
                 Tables\Columns\TextColumn::make('ipk')
                     ->label('IPK')
+                    ->getStateUsing(fn (Nilai $record) => $record->hitungIpk())
                     ->numeric()
                     ->sortable(),
+    
                 Tables\Columns\TextColumn::make('semester')
                     ->label('Semester')
                     ->numeric()
                     ->sortable(),
+    
                 Tables\Columns\TextColumn::make('tahun_ajaran')
                     ->label('Tahun Ajaran')
                     ->searchable(),
+    
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+    
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->filters([
-                //
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->filters([])
+            ->actions([]) // Tidak ada aksi edit/delete
+            ->bulkActions([]);
     }
+    
 
     public static function getPages(): array
     {

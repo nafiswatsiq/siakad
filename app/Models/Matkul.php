@@ -23,4 +23,9 @@ class Matkul extends Model
     {
         return $this->belongsTo(dosen::class, 'dosen_id');
     }
+    public function nilaiMatkuls()
+{
+    return $this->hasMany(NilaiMatkul::class, 'matkul_id');
+}
+
 }
