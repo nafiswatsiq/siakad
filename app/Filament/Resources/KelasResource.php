@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\NilaiResource\Pages;
-use App\Filament\Resources\NilaiResource\RelationManagers;
-use App\Models\Mahasiswa;
-use App\Models\Nilai;
-use App\Models\User;
+use App\Filament\Resources\KelasResource\Pages;
+use App\Filament\Resources\KelasResource\RelationManagers;
+use App\Models\dosen;
+use App\Models\Kelas;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class NilaiResource extends Resource
+class KelasResource extends Resource
 {
-    protected static ?string $model = Nilai::class;
+    protected static ?string $model = Kelas::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -25,24 +24,19 @@ class NilaiResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('mahasiswa_id')
-                    ->label('Nama Mahasiswa')
-                    ->options(User::role('mahasiswa')->get()->pluck('name', 'mahasiswa.id'))
+                Forms\Components\TextInput::make('nama')
+                    ->label('Nama Kelas')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('dosen_id')
+                    ->label('Nama Dosen')
+                    // ->relationship('dosen', 'n')
+                    ->options(dosen::get()->pluck('user.name', 'id'))
                     ->required(),
-                Forms\Components\TextInput::make('ips')
-                    ->label('IPS')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('ipk')
-                    ->label('IPK')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('semester')
-                    ->label('Semester')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\TextInput::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('kuota_kelas')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -52,23 +46,16 @@ class NilaiResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('mahasiswa.user.name')
-                    ->label('Nama Mahasiswa')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ips')
-                    ->label('IPS')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ipk')
-                    ->label('IPK')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('semester')
-                    ->label('Semester')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('nama')
+                    ->label('Kelas')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('dosen.user.name')
+                    ->label('Nama Dosen')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('kuota_kelas')
+                    ->label('Kuota Kelas')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -96,7 +83,7 @@ class NilaiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageNilais::route('/'),
+            'index' => Pages\ManageKelas::route('/'),
         ];
     }
 }

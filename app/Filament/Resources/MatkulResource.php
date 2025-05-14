@@ -2,11 +2,10 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\NilaiResource\Pages;
-use App\Filament\Resources\NilaiResource\RelationManagers;
-use App\Models\Mahasiswa;
-use App\Models\Nilai;
-use App\Models\User;
+use App\Filament\Resources\MatkulResource\Pages;
+use App\Filament\Resources\MatkulResource\RelationManagers;
+use App\Models\dosen;
+use App\Models\Matkul;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,9 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class NilaiResource extends Resource
+class MatkulResource extends Resource
 {
-    protected static ?string $model = Nilai::class;
+    protected static ?string $model = Matkul::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -25,26 +24,32 @@ class NilaiResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('mahasiswa_id')
-                    ->label('Nama Mahasiswa')
-                    ->options(User::role('mahasiswa')->get()->pluck('name', 'mahasiswa.id'))
-                    ->required(),
-                Forms\Components\TextInput::make('ips')
-                    ->label('IPS')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('ipk')
-                    ->label('IPK')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('semester')
-                    ->label('Semester')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
+                Forms\Components\TextInput::make('kode_matkul')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('nama')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('sks')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('kuota')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('sesi')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Select::make('ruangan_id')
+                    ->label('Ruangan')
+                    ->relationship('ruangan', 'kode_ruangan')
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->kode_ruangan} - {$record->nama}")
+                    ->required(),
+    
+                Forms\Components\Select::make('dosen_id')
+                    ->label('Dosen')
+                    ->options(dosen::get()->pluck('user.name', 'id'))
+                    ->required(),
+              
             ]);
     }
 
@@ -52,24 +57,25 @@ class NilaiResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('mahasiswa.user.name')
-                    ->label('Nama Mahasiswa')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ips')
-                    ->label('IPS')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('ipk')
-                    ->label('IPK')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('semester')
-                    ->label('Semester')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
+                Tables\Columns\TextColumn::make('kode_matkul')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('nama')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('sks')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('kuota')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('sesi')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('ruangan.nama')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('dosen.user.name')
+                    ->label('Dosen')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -96,7 +102,7 @@ class NilaiResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageNilais::route('/'),
+            'index' => Pages\ManageMatkuls::route('/'),
         ];
     }
 }
