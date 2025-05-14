@@ -10,6 +10,7 @@ class Matkul extends Model
         'sks',
         'kuota',
         'sesi',
+        'hari',
         'ruangan_id',
         'dosen_id',
     ];
