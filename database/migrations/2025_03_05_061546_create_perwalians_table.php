@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(dosen::class)->constrained();
             $table->string('perihal');
             $table->string('status')->nullable();
-            $table->string('log')->nullable();
+            $table->text('log')->nullable();
             $table->dateTime('jadwal');
             $table->timestamps();
         });

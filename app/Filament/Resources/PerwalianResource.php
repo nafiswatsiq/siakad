@@ -17,6 +17,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Get;
+use Filament\Tables\Actions\Action;
+use Illuminate\Database\Eloquent\Model;
 
 class PerwalianResource extends Resource
 {
@@ -79,12 +81,14 @@ class PerwalianResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('jadwal')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('mahasiswa.nim')
+                    ->label('NIM')
+                    ->searchable(), 
                 Tables\Columns\TextColumn::make('mahasiswa.user.name')
                     ->label('Nama Mahasiswa')
-                    ->searchable(), 
-                Tables\Columns\TextColumn::make('dosen.user.name')
-                    ->label('Nama Dosen')
-                    ->searchable(), 
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('perihal')
                     ->searchable(),  
                 Tables\Columns\TextColumn::make('status')
@@ -94,9 +98,14 @@ class PerwalianResource extends Resource
                         'ditolak' => 'danger',
                     })
                     ->searchable(),
+                Tables\Columns\SelectColumn::make('status')
+                    ->options([
+                        'diterima' => 'Terima',
+                        'ditolak' => 'Tolak'
+                        ])
+                    ->disabled(fn () => User::find(Auth::id())->hasRole('mahasiswa'))
+                    ->rules(['required']),
                 Tables\Columns\TextColumn::make('log')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('jadwal')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -111,20 +120,17 @@ class PerwalianResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make()
+                Action::make('catatan')
                 ->form([
-                    Forms\Components\Select::make('status')
-                    ->live()
-                    ->options([
-                        'diterima' => 'Terima',
-                        'ditolak' => 'Tolak'
-                    ])
-                    ->required(),
-                    Forms\Components\TextInput::make('log')
-                        ->visible(fn (Get $get) => $get('status') === 'diterima')
-                        ->maxLength(255),
-                ]),
+                    Forms\Components\Textarea::make('log')
+                ])
+                ->action(function(Model $record, $data) {
+                    Perwalian::find($record->id)->update($data);
+                })
+                ->visible(fn () => User::find(Auth::id())->hasRole('dosen_wali')),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
