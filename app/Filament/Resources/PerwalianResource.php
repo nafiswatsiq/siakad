@@ -24,7 +24,10 @@ class PerwalianResource extends Resource
 {
     protected static ?string $model = Perwalian::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    protected static ?string $navigationGroup = 'Perwalian';
+    protected static ?string $navigationLabel = 'Pengajuan Perwalian';
 
     public static function form(Form $form): Form
     {
@@ -98,7 +101,7 @@ class PerwalianResource extends Resource
                         'ditolak' => 'danger',
                     })
                     ->searchable()
-                    ->visible(fn () => User::find(Auth::id())->hasRole('mahasiswa')),
+                    ->visible(fn() => User::find(Auth::id())->hasRole('mahasiswa')),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
                         'diterima' => 'Terima',
