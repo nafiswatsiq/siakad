@@ -4,13 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class nilai extends Model
+class Nilai extends Model
 {
     protected $fillable = [
-        'id_mahasiswa',
+        'mahasiswa_id',
         'ips',
         'ipk',
         'semester',
-        'tahun_ajaran'
+        'tahun_ajaran',
     ];
+
+    public function mahasiswa()
+    {
+        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
+    }
 }
