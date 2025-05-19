@@ -13,7 +13,8 @@ class ManagePerwalians extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+            ->label('Ajukan Perwalian'),
         ];
     }
 }

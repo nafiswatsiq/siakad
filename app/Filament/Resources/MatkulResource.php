@@ -76,17 +76,6 @@ class MatkulResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->query(function () {
-                $query = Matkul::query()->with(['dosen']);
-
-                if (User::find(Auth::id())->hasRole('dosen')) {
-                    $query->whereHas('dosen', function ($q) {
-                        $q->where('user_id', Auth::id());
-                    });
-                }
-
-                return $query;
-            })
             ->columns([
                 Tables\Columns\TextColumn::make('kode_matkul')
                     ->searchable(),

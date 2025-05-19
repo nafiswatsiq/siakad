@@ -24,7 +24,10 @@ class PerwalianResource extends Resource
 {
     protected static ?string $model = Perwalian::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    protected static ?string $navigationGroup = 'Perwalian';
+    protected static ?string $navigationLabel = 'Pengajuan Perwalian';
 
     public static function form(Form $form): Form
     {
@@ -35,7 +38,7 @@ class PerwalianResource extends Resource
                     ->options(Mahasiswa::get()->pluck('user.name', 'id'))
                     ->default(function () {
                         $user = User::find(Auth::id());
-                        if($user->hasRole('mahasiswa')) {
+                        if ($user->hasRole('mahasiswa')) {
                             return $user->mahasiswa->kelas->dosen->first()->id;
                         }
                     })
@@ -44,7 +47,7 @@ class PerwalianResource extends Resource
                 Forms\Components\Hidden::make('mahasiswa_id')
                     ->default(function () {
                         $user = User::find(Auth::id());
-                        if($user->hasRole('mahasiswa')) {
+                        if ($user->hasRole('mahasiswa')) {
                             return $user->mahasiswa()->first()->id;
                         }
                     }),
@@ -53,7 +56,7 @@ class PerwalianResource extends Resource
                     ->options(Dosen::get()->pluck('user.name', 'id'))
                     ->default(function () {
                         $user = User::find(Auth::id());
-                        if($user->hasRole('mahasiswa')) {
+                        if ($user->hasRole('mahasiswa')) {
                             return $user->mahasiswa->kelas->dosen->first()->id;
                         }
                     })
@@ -62,7 +65,7 @@ class PerwalianResource extends Resource
                 Forms\Components\Hidden::make('dosen_id')
                     ->default(function () {
                         $user = User::find(Auth::id());
-                        if($user->hasRole('mahasiswa')) {
+                        if ($user->hasRole('mahasiswa')) {
                             return $user->mahasiswa->kelas->dosen->first()->id;
                         }
                     }),
@@ -85,25 +88,26 @@ class PerwalianResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('mahasiswa.nim')
                     ->label('NIM')
-                    ->searchable(), 
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('mahasiswa.user.name')
                     ->label('Nama Mahasiswa')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('perihal')
-                    ->searchable(),  
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn (string $state): string => match ($state) {
+                    ->color(fn(string $state): string => match ($state) {
                         'diterima' => 'success',
                         'ditolak' => 'danger',
                     })
-                    ->searchable(),
+                    ->searchable()
+                    ->visible(fn() => User::find(Auth::id())->hasRole('mahasiswa')),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
                         'diterima' => 'Terima',
-                        'ditolak' => 'Tolak'
-                        ])
-                    ->disabled(fn () => User::find(Auth::id())->hasRole('mahasiswa'))
+                        'ditolak' => 'Ubah Jadwal'
+                    ])
+                    ->disabled(fn() => User::find(Auth::id())->hasRole('mahasiswa'))
                     ->rules(['required']),
                 Tables\Columns\TextColumn::make('log')
                     ->searchable(),
@@ -121,17 +125,41 @@ class PerwalianResource extends Resource
             ])
             ->actions([
                 Action::make('catatan')
-                ->form([
-                    Forms\Components\Textarea::make('log')
-                ])
-                ->action(function(Model $record, $data) {
-                    Perwalian::find($record->id)->update($data);
-                })
-                ->visible(fn () => User::find(Auth::id())->hasRole('dosen_wali')),
+                    ->label('Catatan')
+                    ->form([
+                        Forms\Components\Textarea::make('log')
+                            ->label('Catatan'),
+                    ])
+                    ->action(function (Model $record, array $data) {
+                        $record->update([
+                            'log' => $data['log'],
+                        ]);
+                    })
+                    ->visible(function (Model $record) {
+                        return $record->status === 'diterima' && User::find(Auth::id())->hasRole('dosen_wali');
+                    }),
+
+                Action::make('ubah_jadwal')
+                    ->label('Ubah Jadwal')
+                    ->form([
+                        Forms\Components\DateTimePicker::make('jadwal')
+                            ->label('Jadwal Baru')
+                            ->required(),
+                    ])
+                    ->action(function (Model $record, array $data) {
+                        $record->update([
+                            'jadwal' => $data['jadwal'],
+                            'status' => 'diterima',
+                        ]);
+                    })
+                    ->visible(function (Model $record) {
+                        return $record->status === 'ditolak' && User::find(Auth::id())->hasRole('dosen_wali');
+                    }),
+
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
