@@ -55,18 +55,23 @@ class NilaiResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('mahasiswa.user.name')
+                    ->label('Nama ')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ips')
+                    ->label('IPS')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ipk')
+                    ->label('IPK')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('semester.nama')
+                    ->label('Semester')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tahun_ajaran.nama')
+                    ->label('Tahun Ajaran')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

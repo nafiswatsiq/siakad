@@ -28,7 +28,7 @@ class CreateNilai extends CreateRecord
         //IPS = jumlah(nilai matkul semster* sks matkul semester) / jumlah sks semeter
         //IPS = jumlah(semua nilai matkul * semua sks matkul) / jumlah semua sks
         // Ambil semester & tahun ajaran dari mahasiswa
-        $semester = $mahasiswa->semester;
+        $semester = $mahasiswa->semester_id;
         $tahunAjaran = $mahasiswa->tahun_ajaran;
 
         // Ambil nilai matkul semester itu
@@ -42,7 +42,7 @@ class CreateNilai extends CreateRecord
         $totalSks = $nilaiMatkuls->sum(function ($item) {
             return $item->matkul->sks;
         });
-
+        
         $totalBobot = $nilaiMatkuls->sum(function ($item) {
             return $item->nilai * $item->matkul->sks;
         });
@@ -69,5 +69,14 @@ class CreateNilai extends CreateRecord
         $data['ipk'] = $ipk;
 
         return $data;
+    }
+    protected function afterCreate(): void
+    {
+        $mahasiswa = Mahasiswa::find($this->record->mahasiswa_id);
+
+        if ($mahasiswa) {
+            $mahasiswa->semester_id += 1;
+            $mahasiswa->save();
+        }
     }
 }

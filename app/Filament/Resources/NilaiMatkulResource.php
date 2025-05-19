@@ -30,16 +30,7 @@ class NilaiMatkulResource extends Resource
             ->schema([
                 Forms\Components\Select::make('mahasiswa_id')
                     ->label('Nama Mahasiswa')
-                    ->options(
-                        \App\Models\Mahasiswa::with('user')->get()->mapWithKeys(function ($item) {
-                            return [$item->id => $item->user->name];
-                        })
-                    )
-                    ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $semester = \App\Models\Mahasiswa::where('id', $state)->value('semester_id');
-                        $set('semester_id', $semester);
-                    })
+                    ->options(Mahasiswa::get()->pluck('user.name', 'id'))
                     ->required(),
                 Forms\Components\Select::make('matkul_id')
                     ->label('Mata Kuliah')
@@ -47,6 +38,11 @@ class NilaiMatkulResource extends Resource
                     ->options(function () {
                         $dosenId = Dosen::where('user_id', Auth::id())->value('id');
                         return Matkul::where('dosen_id', $dosenId)->pluck('nama', 'id');
+                    })
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $matkul = Matkul::with('semester')->find($state);
+                        $set('semester_id', $matkul->semester_id);
                     })
                     ->required(),
                 Forms\Components\TextInput::make('nilai')
