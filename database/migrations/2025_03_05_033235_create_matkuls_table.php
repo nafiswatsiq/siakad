@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nama');
             $table->integer('sks');
             $table->integer('kuota');
+            $table->enum('hari', ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat']);
             $table->string('sesi');
             $table->foreignIdFor(Ruangan::class)->constrained();
             $table->foreignIdFor(dosen::class)->constrained();
