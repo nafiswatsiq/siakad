@@ -3,7 +3,9 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
+use App\Models\User;
 use Filament\Tables;
+use App\Models\dosen;
 use App\Models\Matkul;
 use Filament\Forms\Form;
 use App\Models\Mahasiswa;
@@ -15,7 +17,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\NilaiMatkulResource\Pages;
 use App\Filament\Resources\NilaiMatkulResource\RelationManagers;
-use App\Models\dosen;
 
 class NilaiMatkulResource extends Resource
 {
@@ -27,6 +28,19 @@ class NilaiMatkulResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('mahasiswa_id')
+                    ->label('Nama Mahasiswa')
+                    ->options(
+                        \App\Models\Mahasiswa::with('user')->get()->mapWithKeys(function ($item) {
+                            return [$item->id => $item->user->name];
+                        })
+                    )
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $semester = \App\Models\Mahasiswa::where('id', $state)->value('semester_id');
+                        $set('semester_id', $semester);
+                    })
+                    ->required(),
                 Forms\Components\Select::make('matkul_id')
                     ->label('Mata Kuliah')
                     ->placeholder('Pilih Mata Kuliah')
@@ -35,13 +49,13 @@ class NilaiMatkulResource extends Resource
                         return Matkul::where('dosen_id', $dosenId)->pluck('nama', 'id');
                     })
                     ->required(),
-                Forms\Components\Select::make('mahasiswa_id')
-                    ->label('Nama Mahasiswa')
-                    ->options(Mahasiswa::with('user')->get()->pluck('user.name', 'id'))
-                    ->required(),
                 Forms\Components\TextInput::make('nilai')
                     ->required()
                     ->numeric(),
+                Forms\Components\TextInput::make('semester_id')
+                    ->label('Semester')
+                    ->readOnly()
+                    ->required(),
             ]);
     }
 
@@ -50,13 +64,15 @@ class NilaiMatkulResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('mahasiswa.user.name')
-                    ->label('Nama Mahasiswa')
+                    ->numeric()
                     ->sortable(),
-
                 Tables\Columns\TextColumn::make('matkul.nama')
-                    ->label('Mata Kuliah')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('nilai')
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('semester.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -72,6 +88,7 @@ class NilaiMatkulResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

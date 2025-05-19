@@ -12,6 +12,7 @@ class Matkul extends Model
         'sesi',
         'ruangan_id',
         'dosen_id',
+        'semester_id'
     ];
 
     public function ruangan()
@@ -22,5 +23,9 @@ class Matkul extends Model
     public function dosen()
     {
         return $this->belongsTo(dosen::class, 'dosen_id');
+    }
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class, 'semester_id');
     }
 }

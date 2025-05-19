@@ -2,18 +2,19 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\NilaiResource\Pages;
-use App\Filament\Resources\NilaiResource\RelationManagers;
-use App\Models\Mahasiswa;
-use App\Models\Nilai;
-use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use App\Models\Nilai;
+use Filament\Forms\Form;
+use App\Models\Mahasiswa;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\NilaiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\NilaiResource\RelationManagers;
+use App\Models\TahunAjaran;
 
 class NilaiResource extends Resource
 {
@@ -27,24 +28,25 @@ class NilaiResource extends Resource
             ->schema([
                 Forms\Components\Select::make('mahasiswa_id')
                     ->label('Nama Mahasiswa')
-                    ->options(User::role('mahasiswa')->get()->pluck('name', 'mahasiswa.id'))
+                    ->options(
+                        \App\Models\Mahasiswa::with('user')->get()->mapWithKeys(function ($item) {
+                            return [$item->id => $item->user->name];
+                        })
+                    )
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $semester = \App\Models\Mahasiswa::where('id', $state)->value('semester_id');
+                        $set('semester_id', $semester);
+                    })
                     ->required(),
-                Forms\Components\TextInput::make('ips')
-                    ->label('IPS')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('ipk')
-                    ->label('IPK')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('semester')
+                Forms\Components\TextInput::make('semester_id')
                     ->label('Semester')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('tahun_ajaran')
+                    ->readOnly()
+                    ->required(),
+                Forms\Components\Select::make('tahun_ajaran_id')
                     ->label('Tahun Ajaran')
-                    ->required()
-                    ->maxLength(255),
+                    ->options(TahunAjaran::get()->pluck('nama', 'id'))
+                    ->required(),
             ]);
     }
 
@@ -53,23 +55,20 @@ class NilaiResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('mahasiswa.user.name')
-                    ->label('Nama Mahasiswa')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ips')
-                    ->label('IPS')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ipk')
-                    ->label('IPK')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('semester')
-                    ->label('Semester')
+                Tables\Columns\TextColumn::make('semester.nama')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('tahun_ajaran.nama')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -83,6 +82,7 @@ class NilaiResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -97,6 +97,7 @@ class NilaiResource extends Resource
     {
         return [
             'index' => Pages\ManageNilais::route('/'),
+            'create' => Pages\CreateNilai::route('/create'),
         ];
     }
 }

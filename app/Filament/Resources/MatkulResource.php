@@ -2,23 +2,31 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\MatkulResource\Pages;
-use App\Filament\Resources\MatkulResource\RelationManagers;
+use Filament\Forms;
+use App\Models\User;
+use Filament\Tables;
 use App\Models\dosen;
 use App\Models\Matkul;
-use Filament\Forms;
+use App\Models\Semester;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\MatkulResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\MatkulResource\RelationManagers;
 
 class MatkulResource extends Resource
 {
     protected static ?string $model = Matkul::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $slug = 'mata-kuliah';
+    public static function getPluralLabel(): string
+    {
+        return 'Mata Kuliah';
+    }
 
     public static function form(Form $form): Form
     {
@@ -39,23 +47,46 @@ class MatkulResource extends Resource
                 Forms\Components\TextInput::make('sesi')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('hari')
+                    ->label('Hari')
+                    ->options([
+                        'Senin'  => 'Senin',
+                        'Selasa' => 'Selasa',
+                        'Rabu'   => 'Rabu',
+                        'Kamis'  => 'Kamis',
+                        'Jumat'  => 'Jumat',
+                    ])
+                    ->required(),
                 Forms\Components\Select::make('ruangan_id')
                     ->label('Ruangan')
                     ->relationship('ruangan', 'kode_ruangan')
-                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->kode_ruangan} - {$record->nama}")
+                    ->getOptionLabelFromRecordUsing(fn($record) => "{$record->kode_ruangan} - {$record->nama}")
                     ->required(),
-    
                 Forms\Components\Select::make('dosen_id')
                     ->label('Dosen')
                     ->options(dosen::get()->pluck('user.name', 'id'))
                     ->required(),
-              
+                Forms\Components\Select::make('semester_id')
+                    ->label('Semester')
+                    ->options(Semester::get()->pluck('nama', 'id'))
+                    ->required(),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->query(function () {
+                $query = Matkul::query()->with(['dosen']);
+
+                if (User::find(Auth::id())->hasRole('dosen')) {
+                    $query->whereHas('dosen', function ($q) {
+                        $q->where('user_id', Auth::id());
+                    });
+                }
+
+                return $query;
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('kode_matkul')
                     ->searchable(),
@@ -69,11 +100,16 @@ class MatkulResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sesi')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('hari')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('ruangan.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dosen.user.name')
                     ->label('Dosen')
+                    ->numeric()
+                    ->sortable(),
+                     Tables\Columns\TextColumn::make('semester.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
