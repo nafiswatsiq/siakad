@@ -24,4 +24,5 @@ class Matkul extends Model
     {
         return $this->belongsTo(dosen::class, 'dosen_id');
     }
+    
 }
