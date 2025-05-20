@@ -7,6 +7,7 @@ use App\Filament\Resources\KartuRencanaStudiResource\RelationManagers;
 use App\Models\KartuHasilStudi;
 use App\Models\KartuRencanaStudi;
 use App\Models\Matkul;
+use App\Models\UserMatkul;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class KartuRencanaStudiResource extends Resource
 {
-    protected static ?string $model = Matkul::class;
+    protected static ?string $model = UserMatkul::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -38,13 +39,13 @@ class KartuRencanaStudiResource extends Resource
                 Tables\Columns\TextColumn::make('index')
                 ->label('No')
                 ->rowIndex(),
-                Tables\Columns\TextColumn::make('kode_matkul')
+                Tables\Columns\TextColumn::make('matkul.kode_matkul')
                 ->label('Kode Mata Kuliah')
                 ->searchable(),
-                Tables\Columns\TextColumn::make('nama')
+                Tables\Columns\TextColumn::make('matkul.nama')
                 ->label('Mata Kuliah')
                 ->searchable(),
-                Tables\Columns\TextColumn::make('sks')
+                Tables\Columns\TextColumn::make('matkul.sks')
                 ->label('SKS')
                 ->numeric()
                 ->sortable(),
@@ -63,9 +64,9 @@ class KartuRencanaStudiResource extends Resource
                 ]),
             ])
             // untuk memanggil footer
-            // ->contentFooter(view('filament.krs.footer'))
-            // ->emptyStateHeading('Tidak ada mata kuliah terdaftar') 
-            // ->paginated([10, 25, 50, 'all'])
+            ->contentFooter(view('filament.krs.footer'))
+            ->emptyStateHeading('Tidak ada mata kuliah terdaftar') 
+            ->paginated([10, 25, 50, 'all'])
             ;
     }
 
