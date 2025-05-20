@@ -2,17 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\MatkulResource\Pages;
-use App\Filament\Resources\MatkulResource\RelationManagers;
+use Filament\Forms;
+use App\Models\User;
+use Filament\Tables;
 use App\Models\dosen;
 use App\Models\Matkul;
-use Filament\Forms;
+use App\Models\Semester;
 use Filament\Forms\Form;
-use Filament\Resources\Resource;
-use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\MatkulResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\MatkulResource\RelationManagers;
 
 class MatkulResource extends Resource
 {
@@ -49,7 +52,10 @@ class MatkulResource extends Resource
                     ->label('Dosen')
                     ->options(dosen::get()->pluck('user.name', 'id'))
                     ->required(),
-              
+                Forms\Components\Select::make('semester_id')
+                    ->label('Semester')
+                    ->options(Semester::get()->pluck('nama', 'id'))
+                    ->required(),
             ]);
     }
 
@@ -74,6 +80,9 @@ class MatkulResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('dosen.user.name')
                     ->label('Dosen')
+                    ->numeric()
+                    ->sortable(),
+                     Tables\Columns\TextColumn::make('semester.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

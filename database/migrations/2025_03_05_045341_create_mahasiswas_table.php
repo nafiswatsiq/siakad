@@ -2,6 +2,7 @@
 
 use App\Models\Kelas;
 use App\Models\Prodi;
+use App\Models\Semester;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -21,7 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(Prodi::class)->constrained();
             $table->string('jenis_kelamin');
             $table->string('nim');
-            $table->integer('semester');
+            $table->foreignIdFor(Semester::class)->constrained();
             $table->date('tanggal_lahir');
             $table->string('alamat');
             $table->string('no_tlp');

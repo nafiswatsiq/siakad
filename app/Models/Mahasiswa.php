@@ -12,7 +12,7 @@ class Mahasiswa extends Model
         'prodi_id',
         'jenis_kelamin',
         'nim',
-        'semester',
+        'semester_id',
         'tanggal_lahir',
         'alamat',
         'no_tlp',
@@ -28,5 +28,9 @@ class Mahasiswa extends Model
     public function prodi()
     {
         return $this->belongsTo(Prodi::class, 'prodi_id');
+    }
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class, 'semester_id');
     }
 }

@@ -2,19 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\MahasiswaResource\Pages;
-use App\Filament\Resources\MahasiswaResource\RelationManagers;
-use App\Models\Kelas;
-use App\Models\Mahasiswa;
-use App\Models\Prodi;
-use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use App\Models\Kelas;
+use App\Models\Prodi;
+use App\Models\Semester;
+use Filament\Forms\Form;
+use App\Models\Mahasiswa;
 use Filament\Tables\Table;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\MahasiswaResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\MahasiswaResource\RelationManagers;
 
 class MahasiswaResource extends Resource
 {
@@ -46,9 +47,10 @@ class MahasiswaResource extends Resource
                     ->label('NIM')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('semester')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Select::make('semester_id')
+                    ->label('Semester')
+                    ->options(Semester::get()->pluck('nama', 'id'))
+                    ->required(),
                 Forms\Components\DatePicker::make('tanggal_lahir')
                     ->label('Tanggal Lahir')
                     ->required(),
@@ -79,7 +81,7 @@ class MahasiswaResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nim')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('semester')
+                 Tables\Columns\TextColumn::make('semester.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_lahir')
