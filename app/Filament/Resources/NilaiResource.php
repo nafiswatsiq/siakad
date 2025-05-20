@@ -74,6 +74,10 @@ class NilaiResource extends Resource
                     ->label('Tahun Ajaran')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->formatStateUsing(fn($state) => $state ? 'Lulus' : 'Tidak Lulus')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
