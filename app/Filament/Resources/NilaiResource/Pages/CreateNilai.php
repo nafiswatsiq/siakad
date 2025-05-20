@@ -42,7 +42,7 @@ class CreateNilai extends CreateRecord
         $totalSks = $nilaiMatkuls->sum(function ($item) {
             return $item->matkul->sks;
         });
-        
+
         $totalBobot = $nilaiMatkuls->sum(function ($item) {
             return $item->nilai * $item->matkul->sks;
         });
@@ -62,21 +62,20 @@ class CreateNilai extends CreateRecord
 
         $ipk = $totalSksAll > 0 ? $totalBobotAll / $totalSksAll : 0;
 
-        // Masukkan ke data
+        #cek status
+        if ($ipk > 2.00) {
+            $status = true;
+            $mahasiswa->semester_id = $mahasiswa->semester_id + 1;
+            $mahasiswa->save();
+        } else {
+            $status = false;
+        }
+
         $data['semester'] = $semester;
         $data['tahun_ajaran'] = $tahunAjaran;
         $data['ips'] = $ips;
         $data['ipk'] = $ipk;
-
+        $data['status'] = $status;
         return $data;
-    }
-    protected function afterCreate(): void
-    {
-        $mahasiswa = Mahasiswa::find($this->record->mahasiswa_id);
-
-        if ($mahasiswa) {
-            $mahasiswa->semester_id += 1;
-            $mahasiswa->save();
-        }
     }
 }
