@@ -64,9 +64,9 @@ class KartuRencanaStudiResource extends Resource
                 ]),
             ])
             // untuk memanggil footer
-            ->contentFooter(view('filament.krs.footer'))
-            ->emptyStateHeading('Tidak ada mata kuliah terdaftar') 
-            ->paginated([10, 25, 50, 'all'])
+            // ->contentFooter(view('filament.krs.footer'))
+            // ->emptyStateHeading('Tidak ada mata kuliah terdaftar') 
+            // ->paginated([10, 25, 50, 'all'])
             ;
     }
 
