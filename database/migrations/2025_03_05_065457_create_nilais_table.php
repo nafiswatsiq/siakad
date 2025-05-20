@@ -21,6 +21,7 @@ return new class extends Migration
             $table->float('ipk')->nullable();
             $table->foreignIdFor(Semester::class)->constrained();
             $table->foreignIdFor(TahunAjaran::class)->constrained();
+            $table->boolean('status');
             $table->timestamps();
         });
     }
