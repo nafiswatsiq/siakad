@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\UserMatkul;
+use App\Models\TahunAjaran;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserMatkulPolicy
+class TahunAjaranPolicy
 {
     use HandlesAuthorization;
 
@@ -15,15 +15,15 @@ class UserMatkulPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->can('view_any_user::matkul');
+        return $user->can('view_any_tahun::ajaran');
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, UserMatkul $userMatkul): bool
+    public function view(User $user, TahunAjaran $tahunAjaran): bool
     {
-        return $user->can('view_user::matkul');
+        return $user->can('view_tahun::ajaran');
     }
 
     /**
@@ -31,23 +31,23 @@ class UserMatkulPolicy
      */
     public function create(User $user): bool
     {
-        return $user->can('create_user::matkul');
+        return $user->can('create_tahun::ajaran');
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, UserMatkul $userMatkul): bool
+    public function update(User $user, TahunAjaran $tahunAjaran): bool
     {
-        return $user->can('update_user::matkul');
+        return $user->can('update_tahun::ajaran');
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, UserMatkul $userMatkul): bool
+    public function delete(User $user, TahunAjaran $tahunAjaran): bool
     {
-        return $user->can('delete_user::matkul');
+        return $user->can('delete_tahun::ajaran');
     }
 
     /**
@@ -55,15 +55,15 @@ class UserMatkulPolicy
      */
     public function deleteAny(User $user): bool
     {
-        return $user->can('delete_any_user::matkul');
+        return $user->can('delete_any_tahun::ajaran');
     }
 
     /**
      * Determine whether the user can permanently delete.
      */
-    public function forceDelete(User $user, UserMatkul $userMatkul): bool
+    public function forceDelete(User $user, TahunAjaran $tahunAjaran): bool
     {
-        return $user->can('force_delete_user::matkul');
+        return $user->can('force_delete_tahun::ajaran');
     }
 
     /**
@@ -71,15 +71,15 @@ class UserMatkulPolicy
      */
     public function forceDeleteAny(User $user): bool
     {
-        return $user->can('force_delete_any_user::matkul');
+        return $user->can('force_delete_any_tahun::ajaran');
     }
 
     /**
      * Determine whether the user can restore.
      */
-    public function restore(User $user, UserMatkul $userMatkul): bool
+    public function restore(User $user, TahunAjaran $tahunAjaran): bool
     {
-        return $user->can('restore_user::matkul');
+        return $user->can('restore_tahun::ajaran');
     }
 
     /**
@@ -87,15 +87,15 @@ class UserMatkulPolicy
      */
     public function restoreAny(User $user): bool
     {
-        return $user->can('restore_any_user::matkul');
+        return $user->can('restore_any_tahun::ajaran');
     }
 
     /**
      * Determine whether the user can replicate.
      */
-    public function replicate(User $user, UserMatkul $userMatkul): bool
+    public function replicate(User $user, TahunAjaran $tahunAjaran): bool
     {
-        return $user->can('replicate_user::matkul');
+        return $user->can('replicate_tahun::ajaran');
     }
 
     /**
@@ -103,6 +103,6 @@ class UserMatkulPolicy
      */
     public function reorder(User $user): bool
     {
-        return $user->can('reorder_user::matkul');
+        return $user->can('reorder_tahun::ajaran');
     }
 }

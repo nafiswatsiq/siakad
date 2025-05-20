@@ -2,6 +2,7 @@
 
 use App\Models\dosen;
 use App\Models\Ruangan;
+use App\Models\Semester;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,10 +20,10 @@ return new class extends Migration
             $table->string('nama');
             $table->integer('sks');
             $table->integer('kuota');
-            $table->enum('hari', ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat']);
             $table->string('sesi');
             $table->foreignIdFor(Ruangan::class)->constrained();
             $table->foreignIdFor(dosen::class)->constrained();
+            $table->foreignIdFor(Semester::class)->constrained();
             $table->timestamps();
         });
     }
