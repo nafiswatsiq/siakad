@@ -18,16 +18,34 @@ class KartuHasilStudi extends Page
     protected static string $view = 'filament.pages.kartu-hasil-studi';
 
     public $matkuls;
-    public $mahasiswa;
+    // public $mahasiswa;
 
     public function mount()
     {
+        $mahasiswa = Mahasiswa::where('user_id', Auth::id())->first();
+
+         if (!$mahasiswa) {
+            $this->matkuls = collect(); // kosongkan koleksi jika tidak ditemukan
+            return;
+        }
+
+        $this->matkuls = NilaiMatkul::with('matkul')
+            ->where('mahasiswa_id', $mahasiswa->id)
+            ->get();
+
+        // $mahasiswa = Mahasiswa::where('user_id', Auth::id())->first();
+        // $this->matkuls = NilaiMatkul::with('matkul')
+        //     ->where('mahasiswa_id', $mahasiswa?->id)
+        //     ->get();
+
         // $this->matkuls = Kj::with('matkul')
         // ->where('mahasiswa_id', Auth::id())
         // ->get();
-        $this->matkuls = NilaiMatkul::with('matkul')
-        ->where('mahasiswa_id', Auth::id())
-        ->get();
+
+                // $this->matkuls = NilaiMatkul::with('matkul')
+                // ->where('mahasiswa_id', Auth::id())
+                // ->get();
+                // dd($this->matkuls); 
 
         // $dosenId = Auth::id();
 
