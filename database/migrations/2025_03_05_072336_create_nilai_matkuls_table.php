@@ -2,6 +2,7 @@
 
 use App\Models\Matkul;
 use App\Models\Mahasiswa;
+use App\Models\Semester;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(Mahasiswa::class)->constrained();
             $table->foreignIdFor(Matkul::class)->constrained();
             $table->decimal('nilai', 5, 2);
+            $table->foreignIdFor(Semester::class)->constrained();
             $table->timestamps();
         });
     }
