@@ -5,16 +5,19 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\dosen;
+use App\Models\Kelas;
 use App\Models\Nilai;
 use Filament\Forms\Form;
 use App\Models\Mahasiswa;
 use Filament\Tables\Table;
+use App\Models\TahunAjaran;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\NilaiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\NilaiResource\RelationManagers;
-use App\Models\TahunAjaran;
 
 class NilaiResource extends Resource
 {
@@ -22,17 +25,31 @@ class NilaiResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getEloquentQuery(): Builder
+    {
+        $dosenId = Dosen::where('user_id', Auth::id())->value('id');
+
+        $kelasId = Kelas::where('dosen_id', $dosenId)->value('id');
+        $mahasiswaIds = Mahasiswa::where('kelas_id', $kelasId)->pluck('id');
+        return parent::getEloquentQuery()
+            ->wherein('mahasiswa_id', $mahasiswaIds);
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('mahasiswa_id')
                     ->label('Nama Mahasiswa')
-                    ->options(
-                        \App\Models\Mahasiswa::with('user')->get()->mapWithKeys(function ($item) {
-                            return [$item->id => $item->user->name];
-                        })
-                    )
+                    ->options(function () {
+                        $dosenId = \App\Models\Dosen::where('user_id', Auth::id())->value('id');
+                        $kelasId = \App\Models\Kelas::where('id', $dosenId)->value('id');
+                        return \App\Models\Mahasiswa::where('kelas_id', $kelasId)
+                            ->with('user')
+                            ->get()
+                            ->mapWithKeys(function ($item) {
+                                return [$item->id => $item->user->name];
+                            });
+                    })
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
                         $semester = \App\Models\Mahasiswa::where('id', $state)->value('semester_id');
