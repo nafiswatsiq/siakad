@@ -17,10 +17,11 @@ class Mahasiswa extends Model
         'alamat',
         'no_tlp',
     ];
-    public function user()
+    public function User()
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+<<<<<<< HEAD
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');
@@ -32,5 +33,10 @@ class Mahasiswa extends Model
     public function semester()
     {
         return $this->belongsTo(Semester::class, 'semester_id');
+=======
+    public function Kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'nama');
+>>>>>>> origin/yefta
     }
 }
