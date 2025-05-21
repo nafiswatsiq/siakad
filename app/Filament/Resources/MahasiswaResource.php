@@ -27,9 +27,6 @@ class MahasiswaResource extends Resource
     {
         return $form
             ->schema([
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                 Forms\Components\Select::make('user_id')
                     ->label(label: 'Nama')
                     ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
@@ -46,18 +43,13 @@ class MahasiswaResource extends Resource
                     ->label('Jenis Kelamin')
                     ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
                     ->required(),
-=======
-=======
->>>>>>> d6b9a38c4a88c9d46c8470068cd7bd94918d0c8d
                 Forms\Components\Select::make('mahasiswa_id')
                     ->label('Nama Mahasiswa')
                     ->relationship('User', 'name')
-                    ->placeholder('Pilih Nama Mahasiswa')
-=======
+                    ->placeholder('Pilih Nama Mahasiswa'),
                 Forms\Components\Select::make('user_id')
                     ->label(label: 'Nama')
                     ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
->>>>>>> 449ce5ae035f59bd753496c6d12a2bde4aaedbe6
                     ->required(),
                 Forms\Components\Select::make('kelas_id')
                     ->label(label: 'Kelas')
@@ -71,7 +63,6 @@ class MahasiswaResource extends Resource
                     ->label('Jenis Kelamin')
                     ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
                     ->required(),
-<<<<<<< HEAD
                 Forms\Components\TextInput::make('kelas_id')
                     ->required()
                     ->numeric(),
@@ -81,12 +72,6 @@ class MahasiswaResource extends Resource
                 Forms\Components\TextInput::make('jenis_kelamin')
                     ->required()
                     ->maxLength(255),
-<<<<<<< HEAD
->>>>>>> origin/yefta
-=======
->>>>>>> d6b9a38c4a88c9d46c8470068cd7bd94918d0c8d
-=======
->>>>>>> 449ce5ae035f59bd753496c6d12a2bde4aaedbe6
                 Forms\Components\TextInput::make('nim')
                     ->label('NIM')
                     ->required()

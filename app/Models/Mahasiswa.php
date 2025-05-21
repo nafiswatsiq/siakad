@@ -21,10 +21,6 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d6b9a38c4a88c9d46c8470068cd7bd94918d0c8d
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id');
@@ -36,13 +32,5 @@ class Mahasiswa extends Model
     public function semester()
     {
         return $this->belongsTo(Semester::class, 'semester_id');
-<<<<<<< HEAD
-=======
-    public function Kelas()
-    {
-        return $this->belongsTo(Kelas::class, 'nama');
->>>>>>> origin/yefta
-=======
->>>>>>> d6b9a38c4a88c9d46c8470068cd7bd94918d0c8d
     }
 }
