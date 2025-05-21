@@ -81,7 +81,7 @@ class MahasiswaResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nim')
                     ->searchable(),
-                 Tables\Columns\TextColumn::make('semester.nama')
+                Tables\Columns\TextColumn::make('semester.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_lahir')

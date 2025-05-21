@@ -22,11 +22,6 @@ class MatkulResource extends Resource
     protected static ?string $model = Matkul::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $slug = 'mata-kuliah';
-    public static function getPluralLabel(): string
-    {
-        return 'Mata Kuliah';
-    }
 
     public static function form(Form $form): Form
     {
@@ -47,21 +42,12 @@ class MatkulResource extends Resource
                 Forms\Components\TextInput::make('sesi')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('hari')
-                    ->label('Hari')
-                    ->options([
-                        'Senin'  => 'Senin',
-                        'Selasa' => 'Selasa',
-                        'Rabu'   => 'Rabu',
-                        'Kamis'  => 'Kamis',
-                        'Jumat'  => 'Jumat',
-                    ])
-                    ->required(),
                 Forms\Components\Select::make('ruangan_id')
                     ->label('Ruangan')
                     ->relationship('ruangan', 'kode_ruangan')
-                    ->getOptionLabelFromRecordUsing(fn($record) => "{$record->kode_ruangan} - {$record->nama}")
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->kode_ruangan} - {$record->nama}")
                     ->required(),
+    
                 Forms\Components\Select::make('dosen_id')
                     ->label('Dosen')
                     ->options(dosen::get()->pluck('user.name', 'id'))
@@ -95,8 +81,6 @@ class MatkulResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sesi')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('hari')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('ruangan.nama')
                     ->numeric()
