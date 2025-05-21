@@ -25,9 +25,6 @@ class NilaiResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-<<<<<<< HEAD
-   public static function form(Form $form): Form
-=======
     public static function getEloquentQuery(): Builder
     {
         $dosenId = Dosen::where('user_id', Auth::id())->value('id');
@@ -38,7 +35,6 @@ class NilaiResource extends Resource
             ->wherein('mahasiswa_id', $mahasiswaIds);
     }
     public static function form(Form $form): Form
->>>>>>> dzaki
     {
         return $form
             ->schema([
