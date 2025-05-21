@@ -29,9 +29,4 @@ class Nilai extends Model
     {
         return $this->belongsTo(TahunAjaran::class, 'tahun_ajaran_id');
     }
-<<<<<<< HEAD
 }
-
-=======
-}
->>>>>>> dzaki
