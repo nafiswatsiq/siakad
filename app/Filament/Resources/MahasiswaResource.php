@@ -28,6 +28,7 @@ class MahasiswaResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
+<<<<<<< HEAD
                     ->label('Nama Mahasiswa')
                     ->options(
                         User::role('mahasiswa')->pluck('name', 'id')
@@ -35,10 +36,42 @@ class MahasiswaResource extends Resource
                     ->searchable()
                     ->required()
                     ->placeholder('Pilih Nama Mahasiswa'),
+=======
+                    ->label(label: 'Nama')
+                    ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
+                    ->required(),
                 Forms\Components\Select::make('kelas_id')
-                    ->label('Nama Kelas')
-                    ->relationship('Kelas', 'nama')
-                    ->placeholder('Pilih Kelas')
+                    ->label(label: 'Kelas')
+                    ->options(options: Kelas::get()->pluck('nama', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('prodi_id')
+                    ->label('Prodi')
+                    ->options(Prodi::get()->pluck('nama', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
+                    ->required(),
+                Forms\Components\Select::make('mahasiswa_id')
+                    ->label('Nama Mahasiswa')
+                    ->relationship('User', 'name')
+                    ->placeholder('Pilih Nama Mahasiswa'),
+                Forms\Components\Select::make('user_id')
+                    ->label(label: 'Nama')
+                    ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
+                    ->required(),
+>>>>>>> d93bcab6374afc23c1dca836cc0b323d58aa62b0
+                Forms\Components\Select::make('kelas_id')
+                    ->label(label: 'Kelas')
+                    ->options(options: Kelas::get()->pluck('nama', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('prodi_id')
+                    ->label('Prodi')
+                    ->options(Prodi::get()->pluck('nama', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
                     ->required(),
                 Forms\Components\Select::make('prodi_id')
                     ->label('Prodi')
@@ -95,7 +128,7 @@ class MahasiswaResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nim')
                     ->searchable(),
-                 Tables\Columns\TextColumn::make('semester.nama')
+                Tables\Columns\TextColumn::make('semester.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_lahir')

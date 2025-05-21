@@ -65,6 +65,7 @@ class KartuHasilStudiResource extends Resource
     {
         return [
             'index' => Pages\ManageKartuHasilStudis::route('/'),
+            'mahasiswa' => Pages\ManageKartuHasilStudis::route('/{mahasiswaId}'),
         ];
     }
 }

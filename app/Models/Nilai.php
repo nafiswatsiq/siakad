@@ -51,4 +51,8 @@ class Nilai extends Model
         return round($totalNilai / $totalSks, 2); // IPS dibulatkan 2 angka di belakang koma
     }
 
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d93bcab6374afc23c1dca836cc0b323d58aa62b0
