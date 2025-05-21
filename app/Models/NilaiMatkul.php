@@ -22,8 +22,12 @@ class NilaiMatkul extends Model
     {
         return $this->belongsTo(Matkul::class, 'matkul_id');
     }
+<<<<<<< HEAD
     public function semester()
     {
         return $this->belongsTo(Semester::class, 'semester_id');
     }
+=======
+
+>>>>>>> origin/ramli
 }

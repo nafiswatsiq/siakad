@@ -25,8 +25,16 @@ class Matkul extends Model
     {
         return $this->belongsTo(dosen::class, 'dosen_id');
     }
+<<<<<<< HEAD
     public function semester()
     {
         return $this->belongsTo(Semester::class, 'semester_id');
     }
+=======
+    public function nilaiMatkuls()
+{
+    return $this->hasMany(NilaiMatkul::class, 'matkul_id');
+}
+
+>>>>>>> origin/ramli
 }
