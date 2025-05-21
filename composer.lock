@@ -3153,7 +3153,6 @@
         },
         {
             "name": "livewire/livewire",
-<<<<<<< HEAD
             "version": "v3.6.1",
             "source": {
                 "type": "git",
@@ -3164,18 +3163,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/livewire/livewire/zipball/0df0a762698176d714e42e2dfed92b6b9e24b8e4",
                 "reference": "0df0a762698176d714e42e2dfed92b6b9e24b8e4",
-=======
-            "version": "v3.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/livewire/livewire.git",
-                "reference": "4c66b569cb729ba9b2f4a3c4e79f50fd8f2b71d1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/4c66b569cb729ba9b2f4a3c4e79f50fd8f2b71d1",
-                "reference": "4c66b569cb729ba9b2f4a3c4e79f50fd8f2b71d1",
->>>>>>> 8ecb4c6559655fcdd495d6263358da579cbeb0d7
                 "shasum": ""
             },
             "require": {
@@ -3230,11 +3217,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-<<<<<<< HEAD
                 "source": "https://github.com/livewire/livewire/tree/v3.6.1"
-=======
-                "source": "https://github.com/livewire/livewire/tree/v3.6.0"
->>>>>>> 8ecb4c6559655fcdd495d6263358da579cbeb0d7
             },
             "funding": [
                 {
@@ -3242,11 +3225,7 @@
                     "type": "github"
                 }
             ],
-<<<<<<< HEAD
             "time": "2025-03-04T21:48:52+00:00"
-=======
-            "time": "2025-02-26T00:57:32+00:00"
->>>>>>> 8ecb4c6559655fcdd495d6263358da579cbeb0d7
         },
         {
             "name": "masterminds/html5",
@@ -10822,10 +10801,6 @@
     "platform": {
         "php": "^8.2"
     },
-<<<<<<< HEAD
     "platform-dev": [],
-=======
-    "platform-dev": {},
->>>>>>> 8ecb4c6559655fcdd495d6263358da579cbeb0d7
     "plugin-api-version": "2.6.0"
 }
