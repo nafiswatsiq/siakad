@@ -27,22 +27,25 @@ class MahasiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('user_id')
-                    ->label(label: 'Nama')
-                    ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
+                Forms\Components\Select::make('mahasiswa_id')
+                    ->label('Nama Mahasiswa')
+                    ->relationship('User', 'name')
+                    ->placeholder('Pilih Nama Mahasiswa')
                     ->required(),
                 Forms\Components\Select::make('kelas_id')
-                    ->label(label: 'Kelas')
-                    ->options(options: Kelas::get()->pluck('nama', 'id'))
+                    ->label('Nama Kelas')
+                    ->relationship('Kelas', 'nama')
+                    ->placeholder('Pilih Kelas')
                     ->required(),
-                Forms\Components\Select::make('prodi_id')
-                    ->label('Prodi')
-                    ->options(Prodi::get()->pluck('nama', 'id'))
-                    ->required(),
-                Forms\Components\Select::make('jenis_kelamin')
-                    ->label('Jenis Kelamin')
-                    ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
-                    ->required(),
+                Forms\Components\TextInput::make('kelas_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('prodi_id')
+                    ->required()
+                    ->numeric(),
+                Forms\Components\TextInput::make('jenis_kelamin')
+                    ->required()
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('nim')
                     ->label('NIM')
                     ->required()
