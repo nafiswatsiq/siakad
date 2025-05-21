@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Mahasiswa;
 use App\Models\Matkul;
 use App\Models\UserMatkul;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -23,8 +24,16 @@ class TableMatkul extends Component implements HasForms, HasTable
 
     public function table(Table $table): Table
     {
+        $userId = Auth::id();
+        $mahasiswa = Mahasiswa::where('user_id', $userId)->first();
+
         return $table
-            ->query(Matkul::query())
+            ->query(
+                Matkul::query()
+                    ->where('semester_id', $mahasiswa->semester_id)
+                    // ->where('prodi_id', $mahasiswa->prodi_id)
+                    ->with(['ruangan', 'dosen'])
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('kode_matkul')
                     ->searchable(),
