@@ -8,6 +8,7 @@ use App\Models\NilaiMatkul;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Tables\Actions;
 use Filament\Pages\Page;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -24,6 +25,7 @@ class Kemahasiswaan extends Page implements HasTable
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.kemahasiswaan';
+
 
     public $mahasiswa;
 
@@ -54,7 +56,7 @@ class Kemahasiswaan extends Page implements HasTable
         }
     }
 
-    
+
     public function table(Table $table): Table
     {
         return $table
@@ -82,13 +84,34 @@ class Kemahasiswaan extends Page implements HasTable
                 }
             })
             ->columns([
-                TextColumn::make('name'),
+                TextColumn::make('nim')
+                    ->label('NIM')
+                    ->rowIndex(),
+                TextColumn::make('User.name')
+                    ->label('Nama')
+                    ->searchable(),
+                // TextColumn::make('krs')
+                //     ->label('KRS')
+                //     ->getStateUsing(fn() => null)
+                //     ->formatStateUsing(fn() => 'Lihat')
+                //     ->html()
+                //     ->extraAttributes(['class' => 'text-primary underline cursor-pointer']),
+                // TextColumn::make('khs_dummy')
+                //     ->label('KHS')
+                //     ->getStateUsing(fn() => null)
+                //     ->formatStateUsing(fn() => 'Lihat')
+                //     ->html()
+                //     ->extraAttributes(['class' => 'text-primary underline cursor-pointer']),
             ])
+
             ->filters([
                 // ...
             ])
             ->actions([
-                // ...
+                Actions\Action::make('lihat_khs')
+                    ->label('Lihat KHS')
+                    ->button()
+                    ->url(fn () => '')
             ])
             ->bulkActions([
                 // ...
