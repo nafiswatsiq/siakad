@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\KartuRencanaStudiResource\Pages;
 
 use App\Filament\Resources\KartuRencanaStudiResource;
+use App\Filament\Resources\KartuRencanaStudiResource\Widgets\HasilStudi;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
 
@@ -14,6 +15,12 @@ class ManageKartuRencanaStudis extends ManageRecords
     {
         return [
             Actions\CreateAction::make(),
+        ];
+    }
+    protected function getFooterWidgets(): array
+    {
+        return [
+            HasilStudi::class,
         ];
     }
 }
