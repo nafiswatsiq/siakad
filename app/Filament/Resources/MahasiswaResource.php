@@ -28,6 +28,7 @@ class MahasiswaResource extends Resource
         return $form
             ->schema([
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Forms\Components\Select::make('user_id')
                     ->label(label: 'Nama')
                     ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
@@ -45,6 +46,8 @@ class MahasiswaResource extends Resource
                     ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
                     ->required(),
 =======
+=======
+>>>>>>> d6b9a38c4a88c9d46c8470068cd7bd94918d0c8d
                 Forms\Components\Select::make('mahasiswa_id')
                     ->label('Nama Mahasiswa')
                     ->relationship('User', 'name')
@@ -64,7 +67,10 @@ class MahasiswaResource extends Resource
                 Forms\Components\TextInput::make('jenis_kelamin')
                     ->required()
                     ->maxLength(255),
+<<<<<<< HEAD
 >>>>>>> origin/yefta
+=======
+>>>>>>> d6b9a38c4a88c9d46c8470068cd7bd94918d0c8d
                 Forms\Components\TextInput::make('nim')
                     ->label('NIM')
                     ->required()
