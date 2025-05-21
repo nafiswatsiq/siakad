@@ -107,7 +107,7 @@ class MahasiswaResource extends Resource
                     ->maxLength(255),
             ]);
     }
-
+//coba
     public static function table(Table $table): Table
     {
         return $table
