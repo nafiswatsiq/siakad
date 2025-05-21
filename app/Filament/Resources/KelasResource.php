@@ -7,6 +7,7 @@ use App\Filament\Resources\KelasResource\RelationManagers;
 use App\Models\dosen;
 use App\Models\Kelas;
 use App\Models\TahunAjaran;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -26,10 +27,7 @@ class KelasResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama')
-                    ->label('Nama Kelas')
-                    ->required()
-                    ->maxLength(255),
-    
+                    ->required(),
                 Forms\Components\Select::make('dosen_id')
                     ->label('Nama Dosen')
                     ->options(dosen::get()->pluck('user.name', 'id'))
