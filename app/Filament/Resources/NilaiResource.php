@@ -2,18 +2,22 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\NilaiResource\Pages;
-use App\Filament\Resources\NilaiResource\RelationManagers;
-use App\Models\Mahasiswa;
-use App\Models\Nilai;
-use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
+use App\Models\User;
 use Filament\Tables;
+use App\Models\dosen;
+use App\Models\Kelas;
+use App\Models\Nilai;
+use Filament\Forms\Form;
+use App\Models\Mahasiswa;
 use Filament\Tables\Table;
+use App\Models\TahunAjaran;
+use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\NilaiResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\NilaiResource\RelationManagers;
 
 class NilaiResource extends Resource
 {
@@ -21,30 +25,45 @@ class NilaiResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getEloquentQuery(): Builder
+    {
+        $dosenId = Dosen::where('user_id', Auth::id())->value('id');
+
+        $kelasId = Kelas::where('dosen_id', $dosenId)->value('id');
+        $mahasiswaIds = Mahasiswa::where('kelas_id', $kelasId)->pluck('id');
+        return parent::getEloquentQuery()
+            ->wherein('mahasiswa_id', $mahasiswaIds);
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('mahasiswa_id')
                     ->label('Nama Mahasiswa')
-                    ->options(User::role('mahasiswa')->get()->pluck('name', 'mahasiswa.id'))
+                    ->options(function () {
+                        $dosenId = \App\Models\Dosen::where('user_id', Auth::id())->value('id');
+                        $kelasId = \App\Models\Kelas::where('id', $dosenId)->value('id');
+                        return \App\Models\Mahasiswa::where('kelas_id', $kelasId)
+                            ->with('user')
+                            ->get()
+                            ->mapWithKeys(function ($item) {
+                                return [$item->id => $item->user->name];
+                            });
+                    })
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $semester = \App\Models\Mahasiswa::where('id', $state)->value('semester_id');
+                        $set('semester_id', $semester);
+                    })
                     ->required(),
-                Forms\Components\TextInput::make('ips')
-                    ->label('IPS')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('ipk')
-                    ->label('IPK')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('semester')
+                Forms\Components\TextInput::make('semester_id')
                     ->label('Semester')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('tahun_ajaran')
+                    ->readOnly()
+                    ->required(),
+                Forms\Components\Select::make('tahun_ajaran_id')
                     ->label('Tahun Ajaran')
-                    ->required()
-                    ->maxLength(255),
+                    ->options(TahunAjaran::get()->pluck('nama', 'id'))
+                    ->required(),
             ]);
     }
 
@@ -53,7 +72,8 @@ class NilaiResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('mahasiswa.user.name')
-                    ->label('Nama Mahasiswa')
+                    ->label('Nama ')
+                    ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('ips')
                     ->label('IPS')
@@ -63,13 +83,18 @@ class NilaiResource extends Resource
                     ->label('IPK')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('semester')
+                Tables\Columns\TextColumn::make('semester.nama')
                     ->label('Semester')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tahun_ajaran')
+                Tables\Columns\TextColumn::make('tahun_ajaran.nama')
                     ->label('Tahun Ajaran')
-                    ->searchable(),
+                    ->numeric()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label('Status')
+                    ->formatStateUsing(fn($state) => $state ? 'Lulus' : 'Tidak Lulus')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -83,6 +108,7 @@ class NilaiResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])

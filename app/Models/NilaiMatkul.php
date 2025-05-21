@@ -10,6 +10,7 @@ class NilaiMatkul extends Model
         'mahasiswa_id',
         'matkul_id',
         'nilai',
+        'semester_id'
     ];
 
     public function mahasiswa()
@@ -20,5 +21,9 @@ class NilaiMatkul extends Model
     public function matkul()
     {
         return $this->belongsTo(Matkul::class, 'matkul_id');
+    }
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class, 'semester_id');
     }
 }

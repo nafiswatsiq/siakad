@@ -2,10 +2,8 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KelasResource\Pages;
-use App\Filament\Resources\KelasResource\RelationManagers;
-use App\Models\dosen;
-use App\Models\Kelas;
+use App\Filament\Resources\TahunAjaranResource\Pages;
+use App\Filament\Resources\TahunAjaranResource\RelationManagers;
 use App\Models\TahunAjaran;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class KelasResource extends Resource
+class TahunAjaranResource extends Resource
 {
-    protected static ?string $model = Kelas::class;
+    protected static ?string $model = TahunAjaran::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -26,25 +24,10 @@ class KelasResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama')
-                    ->label('Nama Kelas')
                     ->required()
                     ->maxLength(255),
-    
-                Forms\Components\Select::make('dosen_id')
-                    ->label('Nama Dosen')
-                    ->options(dosen::get()->pluck('user.name', 'id'))
+                Forms\Components\Toggle::make('aktif')
                     ->required(),
-    
-                Forms\Components\Select::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
-                    ->options(
-                        TahunAjaran::where('aktif', true)->orderBy('nama')->pluck('nama', 'nama')->toArray()
-                    )
-                    ->required(),
-    
-                Forms\Components\TextInput::make('kuota_kelas')
-                    ->required()
-                    ->maxLength(255),
             ]);
     }
 
@@ -53,16 +36,9 @@ class KelasResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama')
-                    ->label('Kelas')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('dosen.user.name')
-                    ->label('Nama Dosen')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('tahun_ajaran')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('kuota_kelas')
-                    ->label('Kuota Kelas')
-                    ->searchable(),
+                Tables\Columns\IconColumn::make('aktif')
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -76,6 +52,7 @@ class KelasResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
@@ -89,7 +66,7 @@ class KelasResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageKelas::route('/'),
+            'index' => Pages\ManageTahunAjarans::route('/'),
         ];
     }
 }
