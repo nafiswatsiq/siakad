@@ -1,7 +1,8 @@
 <x-filament::page>
     <h2 class="text-xl font-bold mb-4">Daftar Mahasiswa Perwalian</h2>
+    {{ $this->table }}
 
-    <table class="w-full border-collapse text-sm">
+    {{-- <table class="w-full border-collapse text-sm">
         <thead class="bg-gray-100">
             <tr>
                 <th class="border px-4 py-2">Nim</th>
@@ -13,7 +14,6 @@
         <tbody>
             @forelse ($this->mahasiswa as $index => $mahasiswa)
                 <tr>
-                    {{-- <td class="border px-4 py-2 text-center">{{ $index + 1 }}</td> --}}
                     <td class="border px-4 py-2">{{ $mahasiswa->nim }}</td>
                     <td class="border px-4 py-2">{{ $mahasiswa->user->name }}</td>
                     <td class="border px-4 py-2 text-center">{{ $mahasiswa->sks }}</td>
@@ -24,5 +24,5 @@
                 </tr>
             @endforelse
         </tbody>
-    </table>
+    </table> --}}
 </x-filament::page>

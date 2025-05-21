@@ -29,6 +29,7 @@ class MahasiswaResource extends Resource
             ->schema([
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Forms\Components\Select::make('user_id')
                     ->label(label: 'Nama')
                     ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
@@ -52,12 +53,25 @@ class MahasiswaResource extends Resource
                     ->label('Nama Mahasiswa')
                     ->relationship('User', 'name')
                     ->placeholder('Pilih Nama Mahasiswa')
+=======
+                Forms\Components\Select::make('user_id')
+                    ->label(label: 'Nama')
+                    ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
+>>>>>>> 449ce5ae035f59bd753496c6d12a2bde4aaedbe6
                     ->required(),
                 Forms\Components\Select::make('kelas_id')
-                    ->label('Nama Kelas')
-                    ->relationship('Kelas', 'nama')
-                    ->placeholder('Pilih Kelas')
+                    ->label(label: 'Kelas')
+                    ->options(options: Kelas::get()->pluck('nama', 'id'))
                     ->required(),
+                Forms\Components\Select::make('prodi_id')
+                    ->label('Prodi')
+                    ->options(Prodi::get()->pluck('nama', 'id'))
+                    ->required(),
+                Forms\Components\Select::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
+                    ->required(),
+<<<<<<< HEAD
                 Forms\Components\TextInput::make('kelas_id')
                     ->required()
                     ->numeric(),
@@ -71,6 +85,8 @@ class MahasiswaResource extends Resource
 >>>>>>> origin/yefta
 =======
 >>>>>>> d6b9a38c4a88c9d46c8470068cd7bd94918d0c8d
+=======
+>>>>>>> 449ce5ae035f59bd753496c6d12a2bde4aaedbe6
                 Forms\Components\TextInput::make('nim')
                     ->label('NIM')
                     ->required()
@@ -109,7 +125,7 @@ class MahasiswaResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nim')
                     ->searchable(),
-                 Tables\Columns\TextColumn::make('semester.nama')
+                Tables\Columns\TextColumn::make('semester.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_lahir')
