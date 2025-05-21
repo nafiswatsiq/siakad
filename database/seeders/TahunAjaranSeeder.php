@@ -15,19 +15,7 @@ class TahunAjaranSeeder extends Seeder
         DB::table('tahun_ajarans')->insert([
             [
                 'nama' => '2023/2024',
-                'aktif' => false,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'nama' => '2023/2024',
-                'aktif' => false,
-                'created_at' => $now,
-                'updated_at' => $now,
-            ],
-            [
-                'nama' => '2024/2025',
-                'aktif' => true, // aktif tahun ajaran sekarang
+                'aktif' => true,
                 'created_at' => $now,
                 'updated_at' => $now,
             ],

@@ -61,7 +61,7 @@ class UserSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'name' => 'Puput Era',
+                'name' => 'Bu Puput',
                 'email' => 'puput@gmail.com',
                 'email_verified_at' => $now,
                 'password' => Hash::make('password123'),
@@ -70,8 +70,8 @@ class UserSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'name' => 'Nafis Pratama',
-                'email' => 'nafis@gmal.com',
+                'name' => 'Pak Fajar',
+                'email' => 'fajar@gmal.com',
                 'email_verified_at' => $now,
                 'password' => Hash::make('password123'),
                 'remember_token' => Str::random(10),
@@ -79,8 +79,8 @@ class UserSeeder extends Seeder
                 'updated_at' => $now,
             ],
             [
-                'name' => 'Arif Kuniawan',
-                'email' => 'arif@gmail.com',
+                'name' => 'Pak Antonius',
+                'email' => 'anton@gmail.com',
                 'email_verified_at' => $now,
                 'password' => Hash::make('password123'),
                 'remember_token' => Str::random(10),
