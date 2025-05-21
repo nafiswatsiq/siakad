@@ -22,7 +22,7 @@ class NilaiResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-   /* public static function form(Form $form): Form
+    public static function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -48,7 +48,7 @@ class NilaiResource extends Resource
                     ->options(TahunAjaran::get()->pluck('nama', 'id'))
                     ->required(),
             ]);
-    }*/
+    }
 
     public static function table(Table $table): Table
     {
@@ -70,7 +70,6 @@ class NilaiResource extends Resource
                     ->getStateUsing(fn (Nilai $record) => $record->hitungIpk())
                     ->numeric()
                     ->sortable(),
-<<<<<<< HEAD
                 Tables\Columns\TextColumn::make('semester.nama')
                     ->label('Semester')
                     ->numeric()
@@ -79,22 +78,6 @@ class NilaiResource extends Resource
                     ->label('Tahun Ajaran')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
-                    ->formatStateUsing(fn($state) => $state ? 'Lulus' : 'Tidak Lulus')
-                    ->sortable(),
-=======
-    
-                Tables\Columns\TextColumn::make('semester')
-                    ->label('Semester')
-                    ->numeric()
-                    ->sortable(),
-    
-                Tables\Columns\TextColumn::make('tahun_ajaran')
-                    ->label('Tahun Ajaran')
-                    ->searchable(),
-    
->>>>>>> origin/ramli
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -105,7 +88,6 @@ class NilaiResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-<<<<<<< HEAD
             ->filters([
                 //
             ])
@@ -119,11 +101,6 @@ class NilaiResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-=======
-            ->filters([])
-            ->actions([]) // Tidak ada aksi edit/delete
-            ->bulkActions([]);
->>>>>>> origin/ramli
     }
     
 

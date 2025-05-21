@@ -9,7 +9,6 @@ use App\Models\dosen;
 use App\Models\Matkul;
 use Filament\Forms\Form;
 use App\Models\Mahasiswa;
-use App\Models\UserMatkul;
 use Filament\Tables\Table;
 use App\Models\NilaiMatkul;
 use Filament\Resources\Resource;
@@ -31,15 +30,7 @@ class NilaiMatkulResource extends Resource
             ->schema([
                 Forms\Components\Select::make('mahasiswa_id')
                     ->label('Nama Mahasiswa')
-                    ->options(function () {
-                        $dosenId = Dosen::where('user_id', Auth::id())->value('id');
-                        $matkulIds = Matkul::where('dosen_id', $dosenId)->pluck('id');
-                        $mahasiswaIds = UserMatkul::whereIn('matkul_id', $matkulIds)->pluck('user_id');
-                        return Mahasiswa::whereIn('user_id', $mahasiswaIds)
-                            ->with('user')
-                            ->get()
-                            ->pluck('user.name', 'id');
-                    })
+                    ->options(Mahasiswa::get()->pluck('user.name', 'id'))
                     ->required(),
                 Forms\Components\Select::make('matkul_id')
                     ->label('Mata Kuliah')

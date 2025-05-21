@@ -24,10 +24,7 @@ class PerwalianResource extends Resource
 {
     protected static ?string $model = Perwalian::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
-
-    protected static ?string $navigationGroup = 'Perwalian';
-    protected static ?string $navigationLabel = 'Pengajuan Perwalian';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -85,19 +82,6 @@ class PerwalianResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(function (Builder $query) {
-                $user = Auth::user();
-
-                if ($user->mahasiswa) {
-                    $query->where('mahasiswa_id', $user->mahasiswa->id);
-                }
-
-                if ($user->dosen) {
-                    $query->whereHas('mahasiswa.kelas', function ($q) use ($user) {
-                        $q->where('dosen_id', $user->dosen->id);
-                    });
-                }
-            })
             ->columns([
                 Tables\Columns\TextColumn::make('jadwal')
                     ->searchable(),
@@ -116,7 +100,7 @@ class PerwalianResource extends Resource
                         'ditolak' => 'danger',
                     })
                     ->searchable()
-                    ->visible(fn() => User::find(Auth::id())->hasRole('mahasiswa')),
+                    ->visible(fn () => User::find(Auth::id())->hasRole('mahasiswa')),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
                         'diterima' => 'Terima',
