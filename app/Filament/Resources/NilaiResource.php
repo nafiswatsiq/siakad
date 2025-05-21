@@ -22,7 +22,7 @@ class NilaiResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-   /* public static function form(Form $form): Form
+   public static function form(Form $form): Form
     {
         return $form
             ->schema([
@@ -48,7 +48,7 @@ class NilaiResource extends Resource
                     ->options(TahunAjaran::get()->pluck('nama', 'id'))
                     ->required(),
             ]);
-    }*/
+    }
 
     public static function table(Table $table): Table
     {
@@ -61,13 +61,11 @@ class NilaiResource extends Resource
     
                 Tables\Columns\TextColumn::make('ips')
                     ->label('IPS')
-                    ->getStateUsing(fn (Nilai $record) => $record->hitungIps())
                     ->numeric()
                     ->sortable(),
     
                 Tables\Columns\TextColumn::make('ipk')
                     ->label('IPK')
-                    ->getStateUsing(fn (Nilai $record) => $record->hitungIpk())
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('semester.nama')
