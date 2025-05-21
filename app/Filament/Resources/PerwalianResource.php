@@ -29,55 +29,55 @@ class PerwalianResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Select::make('nama_mahasiswa')
-                    ->label('Nama Mahasiswa')
-                    ->options(Mahasiswa::get()->pluck('user.name', 'id'))
-                    ->default(function () {
-                        $user = Auth::user();
-                        if ($user->mahasiswa) {
-                            return $user->mahasiswa->id;
-                            return null;
-                        }
-                    })
-                    ->disabled()
-                    ->required(),
-                Forms\Components\Hidden::make('mahasiswa_id')
-                    ->default(function () {
-                        $user = User::find(Auth::id());
-                        if ($user->hasRole('mahasiswa')) {
-                            return $user->mahasiswa()->first()->id;
-                        }
-                    }),
-                Forms\Components\Select::make('nama_dosen')
-                    ->label('Nama Dosen')
-                    ->options(Dosen::get()->pluck('user.name', 'id'))
-                    ->default(function () {
-                        $user = Auth::user();
-                        if ($user->mahasiswa) {
-                            return $user->mahasiswa->kelas->dosen->id;
-                            return null;
-                        }
-                    })
-                    ->disabled()
-                    ->required(),
-                Forms\Components\Hidden::make('dosen_id')
-                    ->default(function () {
-                        $user = User::find(Auth::id());
-                        if ($user->hasRole('mahasiswa')) {
-                            return $user->mahasiswa->kelas->dosen->first()->id;
-                        }
-                    }),
-                Forms\Components\Select::make('perihal')
-                    ->options([
-                        'Administrasi' => 'Administrasi',
-                        'Akademik' => 'Akademik',
-                        'Bimbingan' => 'Bimbingan',
-                    ]),
-                Forms\Components\DateTimePicker::make('jadwal')
-                    ->required(),
-            ]);
-    }
+          ->schema([
+            // Nama Mahasiswa - tampilkan nama sesuai user login, disable input
+            Forms\Components\TextInput::make('nama_mahasiswa')
+                ->label('Nama Mahasiswa')
+                ->default(function () {
+                    $user = Auth::user();
+                    return $user?->mahasiswa?->user?->name ?? '-';
+                })
+                ->disabled(),
+
+            // Simpan mahasiswa_id tersembunyi
+            Forms\Components\Hidden::make('mahasiswa_id')
+                ->default(function () {
+                    $user = Auth::user();
+                    return $user?->mahasiswa?->id;
+                }),
+
+            // Nama Dosen Wali - tampilkan nama sesuai kelas mahasiswa login, disable input
+            Forms\Components\TextInput::make('nama_dosen')
+                ->label('Nama Dosen Wali')
+                ->default(function () {
+                    $user = Auth::user();
+                    return $user?->mahasiswa?->kelas?->dosen?->first()?->user?->name ?? '-';
+                })
+                ->disabled(),
+
+            // Simpan dosen_id tersembunyi
+            Forms\Components\Hidden::make('dosen_id')
+                ->default(function () {
+                    $user = Auth::user();
+                    return $user?->mahasiswa?->kelas?->dosen?->first()?->id;
+                }),
+
+            Forms\Components\Select::make('perihal')
+                ->label('Perihal')
+                ->options([
+                    'Administrasi' => 'Administrasi',
+                    'Akademik' => 'Akademik',
+                    'Bimbingan' => 'Bimbingan',
+                ])
+                ->required(),
+
+            Forms\Components\DateTimePicker::make('jadwal')
+                ->label('Jadwal Konsultasi')
+                ->required(),
+        ]);
+}
+
+    
 
     public static function table(Table $table): Table
     {
