@@ -29,7 +29,7 @@ class MahasiswaResource extends Resource
             ->schema([
                 Forms\Components\Select::make('user_id')
                     ->label(label: 'Nama')
-                    ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
+                    ->options(User::get()->pluck('name', 'id'))
                     ->required(),
                 Forms\Components\Select::make('kelas_id')
                     ->label(label: 'Kelas')
@@ -81,7 +81,7 @@ class MahasiswaResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('nim')
                     ->searchable(),
-                 Tables\Columns\TextColumn::make('semester.nama')
+                Tables\Columns\TextColumn::make('semester.nama')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('tanggal_lahir')
