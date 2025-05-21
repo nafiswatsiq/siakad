@@ -29,55 +29,6 @@ class PerwalianResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-<<<<<<< HEAD
-            ->schema([
-                Forms\Components\Select::make('nama_mahasiswa')
-                    ->label('Nama Mahasiswa')
-                    ->options(Mahasiswa::get()->pluck('user.name', 'id'))
-                    ->default(function () {
-                        $user = User::find(Auth::id());
-                        if ($user->hasRole('mahasiswa')) {
-                            return $user->mahasiswa->kelas->dosen->first()->id;
-                        }
-                    })
-                    ->disabled()
-                    ->required(),
-                Forms\Components\Hidden::make('mahasiswa_id')
-                    ->default(function () {
-                        $user = User::find(Auth::id());
-                        if ($user->hasRole('mahasiswa')) {
-                            return $user->mahasiswa()->first()->id;
-                        }
-                    }),
-                Forms\Components\Select::make('nama_dosen')
-                    ->label('Nama Dosen')
-                    ->options(Dosen::get()->pluck('user.name', 'id'))
-                    ->default(function () {
-                        $user = User::find(Auth::id());
-                        if ($user->hasRole('mahasiswa')) {
-                            return $user->mahasiswa->kelas->dosen->first()->id;
-                        }
-                    })
-                    ->disabled()
-                    ->required(),
-                Forms\Components\Hidden::make('dosen_id')
-                    ->default(function () {
-                        $user = User::find(Auth::id());
-                        if ($user->hasRole('mahasiswa')) {
-                            return $user->mahasiswa->kelas->dosen->first()->id;
-                        }
-                    }),
-                Forms\Components\Select::make('perihal')
-                    ->options([
-                        'Administrasi' => 'Administrasi',
-                        'Akademik' => 'Akademik',
-                        'Bimbingan' => 'Bimbingan',
-                    ]),
-                Forms\Components\DateTimePicker::make('jadwal')
-                    ->required(),
-            ]);
-    }
-=======
           ->schema([
             // Nama Mahasiswa - tampilkan nama sesuai user login, disable input
             Forms\Components\TextInput::make('nama_mahasiswa')
@@ -127,7 +78,6 @@ class PerwalianResource extends Resource
 }
 
     
->>>>>>> ecc62bcb86733a026e1c5b58577e8a4e3c5bd0fa
 
     public static function table(Table $table): Table
     {
