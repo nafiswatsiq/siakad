@@ -9,7 +9,7 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class HasilStudi extends BaseWidget
 {
-    protected static ?string $heading = 'Hasil Akhir Studi';
+    protected static ?string $heading = 'Hasil Studi Semester Lalu';
 
     public function table(Table $table): Table
     {
