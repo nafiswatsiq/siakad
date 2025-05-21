@@ -106,7 +106,6 @@ class NilaiResource extends Resource
     {
         return [
             'index' => Pages\ManageNilais::route('/'),
-            'create' => Pages\CreateNilai::route('/create'),
         ];
     }
 }

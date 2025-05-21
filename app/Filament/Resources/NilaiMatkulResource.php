@@ -25,6 +25,13 @@ class NilaiMatkulResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getEloquentQuery(): Builder
+    {
+        $dosenId = dosen::where('user_id', Auth::id())->value('id');
+        $matkulIds  = Matkul::where('dosen_id', $dosenId)->pluck('id');
+        return parent::getEloquentQuery()
+            ->whereIn('matkul_id', $matkulIds);
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -55,8 +62,10 @@ class NilaiMatkulResource extends Resource
                     })
                     ->required(),
                 Forms\Components\TextInput::make('nilai')
+                    ->numeric()
                     ->required()
-                    ->numeric(),
+                    ->minValue(0)
+                    ->maxValue(100),
                 Forms\Components\TextInput::make('semester_id')
                     ->label('Semester')
                     ->readOnly()
