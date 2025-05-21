@@ -43,43 +43,12 @@ class MahasiswaResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('jenis_kelamin')
                     ->label('Jenis Kelamin')
-                    ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
-                    ->required(),
-                Forms\Components\Select::make('mahasiswa_id')
-                    ->label('Nama Mahasiswa')
-                    ->relationship('User', 'name')
-                    ->placeholder('Pilih Nama Mahasiswa'),
-                Forms\Components\Select::make('user_id')
-                    ->label(label: 'Nama')
-                    ->options(User::role('mahasiswa')->get()->pluck('name', 'id'))
-                    ->required(),
-                Forms\Components\Select::make('kelas_id')
-                    ->label(label: 'Kelas')
-                    ->options(options: Kelas::get()->pluck('nama', 'id'))
-                    ->required(),
-                Forms\Components\Select::make('prodi_id')
-                    ->label('Prodi')
-                    ->options(Prodi::get()->pluck('nama', 'id'))
-                    ->required(),
-                Forms\Components\Select::make('jenis_kelamin')
-                    ->label('Jenis Kelamin')
-                    ->options(['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan'])
-                    ->required(),
-                Forms\Components\Select::make('prodi_id')
-                    ->label('Prodi')
-                    ->options(Prodi::pluck('nama', 'id'))
-                    ->searchable()
-                    ->required()
-                    ->placeholder('Pilih Prodi'),
-                Forms\Components\Select::make('jenis_kelamin')
-                    ->label('Jenis Kelamin')
                     ->options([
                         'Laki-laki' => 'Laki-laki',
                         'Perempuan' => 'Perempuan',
                     ])
                     ->required()
                     ->native(false) // tampilkan dropdown modern (bukan native HTML)
-                    ->searchable()
                     ->placeholder('Pilih Jenis Kelamin'),
 
                 Forms\Components\TextInput::make('nim')
