@@ -33,12 +33,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Artisan::call('shield:generate --all --ignore-existing-policies');
-        // Artisan::call('shield:super-admin --user=' . $user->id);
-        
-<<<<<<< HEAD
-=======
-
-
->>>>>>> d93bcab6374afc23c1dca836cc0b323d58aa62b0
+        // Artisan::call('shield:super-admin --user=' . $user->id
     }
 }
