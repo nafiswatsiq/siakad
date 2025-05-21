@@ -28,11 +28,9 @@ class MahasiswaResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Select::make('user_id')
-                    ->label('Nama Mahasiswa')
-                    ->options( User::role('mahasiswa')->pluck('name', 'id'))
-                    ->searchable()
-                    ->required()
-                    ->placeholder('Pilih Nama Mahasiswa'),
+                    ->label(label: 'Nama')
+                    ->options(User::get()->pluck('name', 'id'))
+                    ->required(),
                 Forms\Components\Select::make('kelas_id')
                     ->label(label: 'Kelas')
                     ->options(options: Kelas::get()->pluck('nama', 'id'))
