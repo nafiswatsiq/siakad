@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
-use App\Models\dosen;
+use App\Models\Dosen;
 use App\Models\Kelas;
 use App\Models\Nilai;
 use Filament\Forms\Form;

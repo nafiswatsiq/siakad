@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
-use App\Models\dosen;
+use App\Models\Dosen;
 use App\Models\Matkul;
 use App\Models\Semester;
 use Filament\Forms\Form;
@@ -50,7 +50,7 @@ class MatkulResource extends Resource
     
                 Forms\Components\Select::make('dosen_id')
                     ->label('Dosen')
-                    ->options(dosen::get()->pluck('user.name', 'id'))
+                    ->options(Dosen::get()->pluck('user.name', 'id'))
                     ->required(),
                 Forms\Components\Select::make('semester_id')
                     ->label('Semester')

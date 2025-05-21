@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PerwalianResource\Pages;
 use App\Filament\Resources\PerwalianResource\RelationManagers;
-use App\Models\dosen;
 use App\Models\Mahasiswa;
 use App\Models\Perwalian;
 use App\Models\User;
