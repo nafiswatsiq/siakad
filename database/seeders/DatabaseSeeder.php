@@ -35,12 +35,5 @@ class DatabaseSeeder extends Seeder
         // Artisan::call('shield:generate --all --ignore-existing-policies');
         // Artisan::call('shield:super-admin --user=' . $user->id);
         
-        $this->call(UserSeeder::class);
-        $this->call(RuanganSeeder::class);
-        $this->call(ProdiSeeder::class);
-        $this->call(TahunAjaranSeeder::class);
-        $this->call(SemesterSeeder::class);   
-        $this->call(DosenSeeder::class);   
-
     }
 }

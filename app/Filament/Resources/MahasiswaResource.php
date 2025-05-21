@@ -27,25 +27,36 @@ class MahasiswaResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('mahasiswa_id')
+                Forms\Components\Select::make('user_id')
                     ->label('Nama Mahasiswa')
-                    ->relationship('User', 'name')
-                    ->placeholder('Pilih Nama Mahasiswa')
-                    ->required(),
+                    ->options(
+                        User::role('mahasiswa')->pluck('name', 'id')
+                    )
+                    ->searchable()
+                    ->required()
+                    ->placeholder('Pilih Nama Mahasiswa'),
                 Forms\Components\Select::make('kelas_id')
                     ->label('Nama Kelas')
                     ->relationship('Kelas', 'nama')
                     ->placeholder('Pilih Kelas')
                     ->required(),
-                Forms\Components\TextInput::make('kelas_id')
+                Forms\Components\Select::make('prodi_id')
+                    ->label('Prodi')
+                    ->options(Prodi::pluck('nama', 'id'))
+                    ->searchable()
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('prodi_id')
+                    ->placeholder('Pilih Prodi'),
+                Forms\Components\Select::make('jenis_kelamin')
+                    ->label('Jenis Kelamin')
+                    ->options([
+                        'Laki-laki' => 'Laki-laki',
+                        'Perempuan' => 'Perempuan',
+                    ])
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('jenis_kelamin')
-                    ->required()
-                    ->maxLength(255),
+                    ->native(false) // tampilkan dropdown modern (bukan native HTML)
+                    ->searchable()
+                    ->placeholder('Pilih Jenis Kelamin'),
+
                 Forms\Components\TextInput::make('nim')
                     ->label('NIM')
                     ->required()
@@ -66,7 +77,7 @@ class MahasiswaResource extends Resource
                     ->maxLength(255),
             ]);
     }
-//coba
+
     public static function table(Table $table): Table
     {
         return $table
