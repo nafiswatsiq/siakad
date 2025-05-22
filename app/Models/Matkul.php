@@ -10,7 +10,6 @@ class Matkul extends Model
         'sks',
         'kuota',
         'sesi',
-        'hari',
         'ruangan_id',
         'dosen_id',
         'semester_id'
@@ -23,8 +22,9 @@ class Matkul extends Model
 
     public function dosen()
     {
-        return $this->belongsTo(dosen::class, 'dosen_id');
+        return $this->belongsTo(Dosen::class, 'dosen_id');
     }
+    
     public function semester()
     {
         return $this->belongsTo(Semester::class, 'semester_id');

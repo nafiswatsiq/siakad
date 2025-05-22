@@ -4,8 +4,10 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\KelasResource\Pages;
 use App\Filament\Resources\KelasResource\RelationManagers;
-use App\Models\dosen;
+use App\Models\Dosen;
 use App\Models\Kelas;
+use App\Models\TahunAjaran;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -25,17 +27,19 @@ class KelasResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama')
-                    ->label('Nama Kelas')
-                    ->required()
-                    ->maxLength(255),
+                    ->required(),
                 Forms\Components\Select::make('dosen_id')
                     ->label('Nama Dosen')
-                    // ->relationship('dosen', 'n')
-                    ->options(dosen::get()->pluck('user.name', 'id'))
+                    ->options(Dosen::get()->pluck('user.name', 'id'))
                     ->required(),
-                Forms\Components\TextInput::make('tahun_ajaran')
-                    ->required()
-                    ->maxLength(255),
+    
+                Forms\Components\Select::make('tahun_ajaran')
+                    ->label('Tahun Ajaran')
+                    ->options(
+                        TahunAjaran::where('aktif', true)->orderBy('nama')->pluck('nama', 'nama')->toArray()
+                    )
+                    ->required(),
+    
                 Forms\Components\TextInput::make('kuota_kelas')
                     ->required()
                     ->maxLength(255),

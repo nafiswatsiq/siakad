@@ -5,10 +5,11 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
-use App\Models\dosen;
+use App\Models\Dosen;
 use App\Models\Matkul;
 use Filament\Forms\Form;
 use App\Models\Mahasiswa;
+use App\Models\UserMatkul;
 use Filament\Tables\Table;
 use App\Models\NilaiMatkul;
 use Filament\Resources\Resource;
@@ -24,13 +25,28 @@ class NilaiMatkulResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getEloquentQuery(): Builder
+    {
+        $dosenId = Dosen::where('user_id', Auth::id())->value('id');
+        $matkulIds  = Matkul::where('dosen_id', $dosenId)->pluck('id');
+        return parent::getEloquentQuery()
+            ->whereIn('matkul_id', $matkulIds);
+    }
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Select::make('mahasiswa_id')
                     ->label('Nama Mahasiswa')
-                    ->options(Mahasiswa::get()->pluck('user.name', 'id'))
+                    ->options(function () {
+                        $dosenId = Dosen::where('user_id', Auth::id())->value('id');
+                        $matkulIds = Matkul::where('dosen_id', $dosenId)->pluck('id');
+                        $mahasiswaIds = UserMatkul::whereIn('matkul_id', $matkulIds)->pluck('user_id');
+                        return Mahasiswa::whereIn('user_id', $mahasiswaIds)
+                            ->with('user')
+                            ->get()
+                            ->pluck('user.name', 'id');
+                    })
                     ->required(),
                 Forms\Components\Select::make('matkul_id')
                     ->label('Mata Kuliah')
@@ -46,8 +62,10 @@ class NilaiMatkulResource extends Resource
                     })
                     ->required(),
                 Forms\Components\TextInput::make('nilai')
+                    ->numeric()
                     ->required()
-                    ->numeric(),
+                    ->minValue(0)
+                    ->maxValue(100),
                 Forms\Components\TextInput::make('semester_id')
                     ->label('Semester')
                     ->readOnly()

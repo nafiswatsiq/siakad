@@ -4,7 +4,6 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PerwalianResource\Pages;
 use App\Filament\Resources\PerwalianResource\RelationManagers;
-use App\Models\dosen;
 use App\Models\Mahasiswa;
 use App\Models\Perwalian;
 use App\Models\User;
@@ -24,65 +23,77 @@ class PerwalianResource extends Resource
 {
     protected static ?string $model = Perwalian::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-user-group';
-
-    protected static ?string $navigationGroup = 'Perwalian';
-    protected static ?string $navigationLabel = 'Pengajuan Perwalian';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Select::make('nama_mahasiswa')
-                    ->label('Nama Mahasiswa')
-                    ->options(Mahasiswa::get()->pluck('user.name', 'id'))
-                    ->default(function () {
-                        $user = User::find(Auth::id());
-                        if ($user->hasRole('mahasiswa')) {
-                            return $user->mahasiswa->kelas->dosen->first()->id;
-                        }
-                    })
-                    ->disabled()
-                    ->required(),
-                Forms\Components\Hidden::make('mahasiswa_id')
-                    ->default(function () {
-                        $user = User::find(Auth::id());
-                        if ($user->hasRole('mahasiswa')) {
-                            return $user->mahasiswa()->first()->id;
-                        }
-                    }),
-                Forms\Components\Select::make('nama_dosen')
-                    ->label('Nama Dosen')
-                    ->options(Dosen::get()->pluck('user.name', 'id'))
-                    ->default(function () {
-                        $user = User::find(Auth::id());
-                        if ($user->hasRole('mahasiswa')) {
-                            return $user->mahasiswa->kelas->dosen->first()->id;
-                        }
-                    })
-                    ->disabled()
-                    ->required(),
-                Forms\Components\Hidden::make('dosen_id')
-                    ->default(function () {
-                        $user = User::find(Auth::id());
-                        if ($user->hasRole('mahasiswa')) {
-                            return $user->mahasiswa->kelas->dosen->first()->id;
-                        }
-                    }),
-                Forms\Components\Select::make('perihal')
-                    ->options([
-                        'Administrasi' => 'Administrasi',
-                        'Akademik' => 'Akademik',
-                        'Bimbingan' => 'Bimbingan',
-                    ]),
-                Forms\Components\DateTimePicker::make('jadwal')
-                    ->required(),
-            ]);
-    }
+          ->schema([
+            // Nama Mahasiswa - tampilkan nama sesuai user login, disable input
+            Forms\Components\TextInput::make('nama_mahasiswa')
+                ->label('Nama Mahasiswa')
+                ->default(function () {
+                    $user = Auth::user();
+                    return $user?->mahasiswa?->user?->name ?? '-';
+                })
+                ->disabled(),
+
+            // Simpan mahasiswa_id tersembunyi
+            Forms\Components\Hidden::make('mahasiswa_id')
+                ->default(function () {
+                    $user = Auth::user();
+                    return $user?->mahasiswa?->id;
+                }),
+
+            // Nama Dosen Wali - tampilkan nama sesuai kelas mahasiswa login, disable input
+            Forms\Components\TextInput::make('nama_dosen')
+                ->label('Nama Dosen Wali')
+                ->default(function () {
+                    $user = Auth::user();
+                    return $user?->mahasiswa?->kelas?->dosen?->first()?->user?->name ?? '-';
+                })
+                ->disabled(),
+
+            // Simpan dosen_id tersembunyi
+            Forms\Components\Hidden::make('dosen_id')
+                ->default(function () {
+                    $user = Auth::user();
+                    return $user?->mahasiswa?->kelas?->dosen?->first()?->id;
+                }),
+
+            Forms\Components\Select::make('perihal')
+                ->label('Perihal')
+                ->options([
+                    'Administrasi' => 'Administrasi',
+                    'Akademik' => 'Akademik',
+                    'Bimbingan' => 'Bimbingan',
+                ])
+                ->required(),
+
+            Forms\Components\DateTimePicker::make('jadwal')
+                ->label('Jadwal Konsultasi')
+                ->required(),
+        ]);
+}
+
+    
 
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $user = Auth::user();
+
+                if ($user->mahasiswa) {
+                    $query->where('mahasiswa_id', $user->mahasiswa->id);
+                }
+
+                if ($user->dosen) {
+                    $query->whereHas('mahasiswa.kelas', function ($q) use ($user) {
+                        $q->where('dosen_id', $user->dosen->id);
+                    });
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('jadwal')
                     ->searchable(),
@@ -101,7 +112,7 @@ class PerwalianResource extends Resource
                         'ditolak' => 'danger',
                     })
                     ->searchable()
-                    ->visible(fn() => User::find(Auth::id())->hasRole('mahasiswa')),
+                    ->visible(fn () => User::find(Auth::id())->hasRole('mahasiswa')),
                 Tables\Columns\SelectColumn::make('status')
                     ->options([
                         'diterima' => 'Terima',

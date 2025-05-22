@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
-use App\Models\dosen;
+use App\Models\Dosen;
 use App\Models\Matkul;
 use App\Models\Semester;
 use Filament\Forms\Form;
@@ -22,11 +22,6 @@ class MatkulResource extends Resource
     protected static ?string $model = Matkul::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $slug = 'mata-kuliah';
-    public static function getPluralLabel(): string
-    {
-        return 'Mata Kuliah';
-    }
 
     public static function form(Form $form): Form
     {
@@ -47,24 +42,15 @@ class MatkulResource extends Resource
                 Forms\Components\TextInput::make('sesi')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Select::make('hari')
-                    ->label('Hari')
-                    ->options([
-                        'Senin'  => 'Senin',
-                        'Selasa' => 'Selasa',
-                        'Rabu'   => 'Rabu',
-                        'Kamis'  => 'Kamis',
-                        'Jumat'  => 'Jumat',
-                    ])
-                    ->required(),
                 Forms\Components\Select::make('ruangan_id')
                     ->label('Ruangan')
                     ->relationship('ruangan', 'kode_ruangan')
-                    ->getOptionLabelFromRecordUsing(fn($record) => "{$record->kode_ruangan} - {$record->nama}")
+                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->kode_ruangan} - {$record->nama}")
                     ->required(),
+    
                 Forms\Components\Select::make('dosen_id')
                     ->label('Dosen')
-                    ->options(dosen::get()->pluck('user.name', 'id'))
+                    ->options(Dosen::get()->pluck('user.name', 'id'))
                     ->required(),
                 Forms\Components\Select::make('semester_id')
                     ->label('Semester')
@@ -76,6 +62,13 @@ class MatkulResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+        ->modifyQueryUsing(function (Builder $query) {
+                $user = Auth::user();
+
+                if ($user->dosen) {
+                    $query->where('dosen_id', $user->dosen->id);
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('kode_matkul')
                     ->searchable(),
@@ -88,8 +81,6 @@ class MatkulResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sesi')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('hari')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('ruangan.nama')
                     ->numeric()

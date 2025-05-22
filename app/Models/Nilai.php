@@ -12,6 +12,7 @@ class Nilai extends Model
         'ipk',
         'semester_id',
         'tahun_ajaran_id',
+        'status'
     ];
 
     public function mahasiswa()
