@@ -2,12 +2,12 @@
 
 namespace App\Filament\Pages;
 
-use BezhanSalleh\FilamentShield\Traits\HasPageShield as TraitsHasPageShield;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
 
 class PendaftaranMatakuliah extends Page
 {
-    use TraitsHasPageShield;
+    use HasPageShield;
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     protected static string $view = 'filament.pages.pendaftaran-matakuliah';

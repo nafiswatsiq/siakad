@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\dosen;
+use App\Models\Dosen;
 use App\Models\Mahasiswa;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('perwalians', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Mahasiswa::class)->constrained();
-            $table->foreignIdFor(dosen::class)->constrained();
+            $table->foreignIdFor(Dosen::class)->constrained();
             $table->string('perihal');
             $table->string('status')->nullable();
             $table->text('log')->nullable();

@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use Filament\Forms;
 use App\Models\User;
 use Filament\Tables;
-use App\Models\dosen;
+use App\Models\Dosen;
 use App\Models\Matkul;
 use Filament\Forms\Form;
 use App\Models\Mahasiswa;
@@ -27,7 +27,7 @@ class NilaiMatkulResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        $dosenId = dosen::where('user_id', Auth::id())->value('id');
+        $dosenId = Dosen::where('user_id', Auth::id())->value('id');
         $matkulIds  = Matkul::where('dosen_id', $dosenId)->pluck('id');
         return parent::getEloquentQuery()
             ->whereIn('matkul_id', $matkulIds);
