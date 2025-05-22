@@ -39,7 +39,21 @@ class KhsController extends Controller
         foreach ($nilaiMatkul as $index => $item) {
             $sks = $item->matkul->sks;
             $mutu = $item->nilai;
-
+            if ($mutu <= 4 && $mutu > 3.5) {
+                $nila_huruf = "A";
+            } elseif ($mutu <= 3.5 && $mutu > 3) {
+                $nila_huruf = "AB";
+            } elseif ($mutu <= 3 && $mutu > 2.5) {
+                $nila_huruf = "B";
+            } elseif ($mutu <= 2.5 && $mutu > 2) {
+                $nila_huruf = "BC";
+            } elseif ($mutu <= 2 && $mutu > 1) {  
+                $nila_huruf = "C";
+            } elseif ($mutu <= 1 && $mutu > 0 ) {
+                $nila_huruf = "D";
+            } elseif ($mutu == 0) {
+                $nila_huruf = "E";
+            }
             $totalSks += $sks;
             $totalMutu += $mutu;
 
@@ -49,6 +63,7 @@ class KhsController extends Controller
                 'matkul' => $item->matkul->nama,
                 'sks' => $sks,
                 'nilai' => $mutu,
+                'nilai_huruf' => $nila_huruf
             ];
         }
 

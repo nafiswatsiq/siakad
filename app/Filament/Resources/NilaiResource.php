@@ -42,7 +42,7 @@ class NilaiResource extends Resource
                     ->label('Nama Mahasiswa')
                     ->options(function () {
                         $dosenId = \App\Models\Dosen::where('user_id', Auth::id())->value('id');
-                        $kelasId = \App\Models\Kelas::where('id', $dosenId)->value('id');
+                        $kelasId = \App\Models\Kelas::where('dosen_id', $dosenId)->value('id');
                         return \App\Models\Mahasiswa::where('kelas_id', $kelasId)
                             ->with('user')
                             ->get()
