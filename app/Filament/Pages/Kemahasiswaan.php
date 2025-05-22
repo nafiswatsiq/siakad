@@ -109,14 +109,14 @@ class Kemahasiswaan extends Page implements HasTable
                 // ...
             ])
             ->actions([
-                Actions\Action::make('lihat_krs')
-                    ->label('Lihat KRS')
-                    ->button()
-                    ->url(fn (Model $record) => route('filament.admin.resources.kartu-hasil-studis.mahasiswa', $record)),
+                // Actions\Action::make('lihat_krs')
+                //     ->label('Lihat KRS')
+                //     ->button()
+                //     ->url(fn (Model $record) => route('filament.admin.resources.kartu-hasil-studis.mahasiswa', $record)),
                 Actions\Action::make('lihat_khs')
                     ->label('Lihat KHS')
                     ->button()
-                    ->url(fn (Model $record) => route('filament.admin.resources.kartu-hasil-studis.mahasiswa', $record)),
+                    ->url(fn (Model $record) => route('filament.admin.resources.kartu-hasil-studis.mahasiswa', $record->id)),
             ])
             ->bulkActions([
                 // ...
