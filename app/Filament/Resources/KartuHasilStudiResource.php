@@ -14,7 +14,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\Auth;
 
 class KartuHasilStudiResource extends Resource
 {
@@ -29,11 +28,6 @@ class KartuHasilStudiResource extends Resource
             ->schema([
                 //
             ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->where('user_id', Auth::id());
     }
 
     public static function table(Table $table): Table

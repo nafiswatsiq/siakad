@@ -7,6 +7,7 @@ use App\Models\UserMatkul;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Support\Facades\Auth;
 
 class HasilAkhirStudi extends BaseWidget
 {
@@ -15,7 +16,11 @@ class HasilAkhirStudi extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
-            ->query(Nilai::query())
+        ->query(function () {
+            return Nilai::whereHas('mahasiswa', function ($query) {
+                $query->where('user_id', Auth::id());
+            });
+        })        
             ->columns([
                 Tables\Columns\TextColumn::make('ipk')->label('IPK'),
                 Tables\Columns\TextColumn::make('ips')->label('IPS'),
