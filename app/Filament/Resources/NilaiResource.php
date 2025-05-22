@@ -62,7 +62,9 @@ class NilaiResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('tahun_ajaran_id')
                     ->label('Tahun Ajaran')
-                    ->options(TahunAjaran::get()->pluck('nama', 'id'))
+                    ->options(
+                        TahunAjaran::where('aktif', true)->pluck('nama', 'id')
+                    )
                     ->required(),
             ]);
     }
