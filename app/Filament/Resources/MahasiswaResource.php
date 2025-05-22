@@ -30,6 +30,7 @@ class MahasiswaResource extends Resource
                 Forms\Components\Select::make('user_id')
                     ->label(label: 'Nama')
                     ->options(User::get()->pluck('name', 'id'))
+                    ->searchable()
                     ->required(),
                 Forms\Components\Select::make('kelas_id')
                     ->label(label: 'Kelas')

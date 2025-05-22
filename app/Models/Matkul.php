@@ -22,7 +22,7 @@ class Matkul extends Model
 
     public function dosen()
     {
-        return $this->belongsTo(dosen::class, 'dosen_id');
+        return $this->belongsTo(Dosen::class, 'dosen_id');
     }
     
     public function semester()

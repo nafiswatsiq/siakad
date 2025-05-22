@@ -30,6 +30,7 @@ class DosenResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Select::make('user_id')
                     ->label('Nama')
+                    ->searchable()
                     ->options(User::get()->pluck('name', 'id'))
                     ->required(),
                 Forms\Components\TextInput::make('alamat')

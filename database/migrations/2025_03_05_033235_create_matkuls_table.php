@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\dosen;
+use App\Models\Dosen;
 use App\Models\Ruangan;
 use App\Models\Semester;
 use Illuminate\Database\Migrations\Migration;
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('kuota');
             $table->string('sesi');
             $table->foreignIdFor(Ruangan::class)->constrained();
-            $table->foreignIdFor(dosen::class)->constrained();
+            $table->foreignIdFor(Dosen::class)->constrained();
             $table->foreignIdFor(Semester::class)->constrained();
             $table->timestamps();
         });

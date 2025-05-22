@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\KelasResource\Pages;
 use App\Filament\Resources\KelasResource\RelationManagers;
-use App\Models\dosen;
+use App\Models\Dosen;
 use App\Models\Kelas;
 use App\Models\TahunAjaran;
 use App\Models\User;
@@ -30,7 +30,7 @@ class KelasResource extends Resource
                     ->required(),
                 Forms\Components\Select::make('dosen_id')
                     ->label('Nama Dosen')
-                    ->options(dosen::get()->pluck('user.name', 'id'))
+                    ->options(Dosen::get()->pluck('user.name', 'id'))
                     ->required(),
     
                 Forms\Components\Select::make('tahun_ajaran')

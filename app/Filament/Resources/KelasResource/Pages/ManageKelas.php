@@ -3,7 +3,7 @@
 namespace App\Filament\Resources\KelasResource\Pages;
 
 use App\Models\User;
-use App\Models\dosen;
+use App\Models\Dosen;
 use Filament\Actions;
 use App\Filament\Resources\KelasResource;
 use Filament\Resources\Pages\ManageRecords;

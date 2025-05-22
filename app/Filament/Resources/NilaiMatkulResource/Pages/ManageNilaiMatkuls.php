@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Resources\Pages\ManageRecords;
 use App\Filament\Resources\NilaiMatkulResource;
-use App\Models\dosen;
 use App\Models\Matkul;
 
 class ManageNilaiMatkuls extends ManageRecords

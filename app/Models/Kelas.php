@@ -15,6 +15,6 @@ class Kelas extends Model
 
     public function dosen()
     {
-        return $this->belongsTo(dosen::class);
+        return $this->belongsTo(Dosen::class);
     }
 }
