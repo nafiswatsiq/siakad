@@ -14,6 +14,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -111,7 +112,7 @@ class Kemahasiswaan extends Page implements HasTable
                 Actions\Action::make('lihat_krs')
                     ->label('Lihat KRS')
                     ->button()
-                    ->url(fn () => route('filament.admin.resources.kartu-hasil-studis.index')),
+                    ->url(fn (Model $record) => route('filament.admin.resources.kartu-hasil-studis.mahasiswa', $record)),
                 Actions\Action::make('lihat_khs')
                     ->label('Lihat KHS')
                     ->button()
