@@ -19,7 +19,11 @@ class HasilAkhirStudi extends BaseWidget
             ->columns([
                 Tables\Columns\TextColumn::make('ipk')->label('IPK'),
                 Tables\Columns\TextColumn::make('ips')->label('IPS'),
-                Tables\Columns\TextColumn::make('')->label('Status Kelulusan'),
+                Tables\Columns\TextColumn::make('status')
+                ->label('Status Kelulusan')
+                ->formatStateUsing(function ($state) {
+                    return $state ? 'Lulus' : 'Tidak Lulus';
+                }),
             ]);
     }
 }
