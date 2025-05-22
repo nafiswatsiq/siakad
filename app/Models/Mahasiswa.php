@@ -33,4 +33,8 @@ class Mahasiswa extends Model
     {
         return $this->belongsTo(Semester::class, 'semester_id');
     }
+    public function nilai()
+    {
+        return $this->hasOne(Nilai::class);
+    }
 }

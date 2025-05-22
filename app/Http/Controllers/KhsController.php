@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mahasiswa;
+use App\Models\NilaiMatkul;
+use App\Models\TahunAjaran;
 use App\Models\User;
 use Illuminate\Http\Request;
 use PhpOffice\PhpWord\TemplateProcessor;
@@ -14,28 +16,53 @@ class KhsController extends Controller
         // $mahasiswa = Mahasiswa::findOrFail($mahasiswaId);
         $user = User::with('mahasiswa')->findOrFail($userId);
         $mahasiswa = Mahasiswa::where('user_id', $user->id)->first();
-        dd($mahasiswa);
+        $nilaiMatkul = NilaiMatkul::where('mahasiswa_id', $mahasiswa->id)->get();
 
-        $templatePath = storage_path('app/templates/khs_template.docx');
+        $templatePath = 'templates/khs_template.docx';
         $templateProcessor = new TemplateProcessor($templatePath);
 
-        $templateProcessor->setValue('nama', $mahasiswa->User->nama);
+        $templateProcessor->setValue('nama', $user->name);
         $templateProcessor->setValue('nim', $mahasiswa->nim);
         $templateProcessor->setValue('kelas', $mahasiswa->kelas->nama);
         $templateProcessor->setValue('semester', $mahasiswa->semester->nama);
         $templateProcessor->setValue('prodi', $mahasiswa->prodi->nama);
-
+        $templateProcessor->setValue('ipk', optional($mahasiswa->nilai)->ipk ?? '-');
+        $templateProcessor->setValue('ips', optional($mahasiswa->nilai)->ips ?? '-');
+        $status = optional($mahasiswa->nilai)->status == 1 ? 'LULUS' : 'TIDAK LULUS';
+        $templateProcessor->setValue('status', $status);
+                
+        // Persiapan looping nilai
         $nilaiData = [];
-        foreach ($mahasiswa->khs->nilai as $item) {
+        $totalSks = 0;
+        $totalMutu = 0;
+
+        foreach ($nilaiMatkul as $index => $item) {
+            $sks = $item->matkul->sks;
+            $mutu = $item->nilai;
+
+            $totalSks += $sks;
+            $totalMutu += $mutu;
+
             $nilaiData[] = [
+                'no' => $index + 1,
+                'kode_matkul' => $item->matkul->kode_matkul,
                 'matkul' => $item->matkul->nama,
-                'nilai' => $item->nilai,
+                'sks' => $sks,
+                'nilai' => $mutu,
             ];
         }
 
-        $templateProcessor->cloneBlock('nilai_loop', count($nilaiData), true, false, $nilaiData);
+        // dd($nilaiMatkul, $nilaiData, $mahasiswa); 
+        $templateProcessor->cloneRowAndSetValues('no', $nilaiData);
 
-        $outputPath = storage_path('app/khs_mahasiswa_' . $mahasiswa->id . '.docx');
+         // Isi total sks dan mutu ke template
+         $templateProcessor->setValue('jumlah_sks', $totalSks);
+         $templateProcessor->setValue('jumlah_mutu', $totalMutu);
+  
+
+        // $templateProcessor->cloneBlock('nilai_loop', count($nilaiData), true, false, $nilaiData); (kalo pake ini perlu ${nilai_loop} dan ${/nilai_loop} di word nya)
+
+        $outputPath = storage_path('app/public/khs_mahasiswa_' . $mahasiswa->id . '.docx');
         $templateProcessor->saveAs($outputPath);
 
         return response()->download($outputPath)->deleteFileAfterSend(true);
