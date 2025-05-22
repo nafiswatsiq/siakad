@@ -71,12 +71,12 @@ class KartuHasilStudiResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    // Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -85,7 +85,7 @@ class KartuHasilStudiResource extends Resource
     {
         return [
             'index' => Pages\ManageKartuHasilStudis::route('/'),
-            'mahasiswa' => Pages\KrsMahasiswa::route('/{record}/mahasiswa'),
+            'mahasiswa' => Pages\KhsMahasiswa::route('/{record}/mahasiswa'),
         ];
     }
 }
