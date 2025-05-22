@@ -116,7 +116,7 @@ class Kemahasiswaan extends Page implements HasTable
                 Actions\Action::make('lihat_khs')
                     ->label('Lihat KHS')
                     ->button()
-                    ->url(fn () => route('filament.admin.resources.kartu-hasil-studis.index')),
+                    ->url(fn (Model $record) => route('filament.admin.resources.kartu-hasil-studis.mahasiswa', $record)),
             ])
             ->bulkActions([
                 // ...

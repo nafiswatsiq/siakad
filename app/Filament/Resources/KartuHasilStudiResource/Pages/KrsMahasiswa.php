@@ -8,16 +8,16 @@ use Filament\Resources\Pages\Page;
 
 class KrsMahasiswa extends Page
 {
-    // use InteractsWithRecord;
+    use InteractsWithRecord;
     
     protected static string $resource = KartuHasilStudiResource::class;
     protected static string $view = 'filament.resources.kartu-hasil-studi-resource.pages.krs-mahasiswa';
 
-    // public function mount(int | string $record): void
-    // {
-    //     $this->record = $this->resolveRecord($record);
-    //     // dd($this->record);
-    // }
+    public function mount(int | string $record): void
+    {
+        $this->record = $this->resolveRecord($record);
+        // dd($this->record);
+    }
     
 
 }
