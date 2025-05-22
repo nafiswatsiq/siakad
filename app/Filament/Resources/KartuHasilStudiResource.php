@@ -5,10 +5,13 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\KartuHasilStudiResource\Pages;
 use App\Filament\Resources\KartuHasilStudiResource\RelationManagers;
 use App\Models\KartuHasilStudi;
+use App\Models\Mahasiswa;
 use App\Models\NilaiMatkul;
+use App\Models\User;
 use App\Models\UserMatkul;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,7 +21,8 @@ use Illuminate\Support\Facades\Auth;
 
 class KartuHasilStudiResource extends Resource
 {
-    protected static ?string $model = UserMatkul::class;
+    
+    protected static ?string $model = NilaiMatkul::class;
     protected static ?string $modelLabel = "Kartu Hasil Studi";
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -33,7 +37,14 @@ class KartuHasilStudiResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('user_id', Auth::id());
+        $user = User::find(Auth::id());
+        if($user->hasRole('mahasiswa')) {
+            $mahasiswa = Mahasiswa::where('user_id', Auth::id())->first();
+            $model = parent::getEloquentQuery()->where('mahasiswa_id', $mahasiswa->id);
+        } else {
+            $model = parent::getEloquentQuery();
+        }
+        return $model;
     }
 
     public static function table(Table $table): Table
@@ -51,6 +62,9 @@ class KartuHasilStudiResource extends Resource
                 ->searchable(),
                 Tables\Columns\TextColumn::make('matkul.sks')
                 ->label('SKS')
+                ->searchable(),
+                Tables\Columns\TextColumn::make('nilai')
+                ->label('Nilai')
                 ->searchable(),
             ])
             ->filters([
@@ -71,7 +85,7 @@ class KartuHasilStudiResource extends Resource
     {
         return [
             'index' => Pages\ManageKartuHasilStudis::route('/'),
-            'mahasiswa' => Pages\ManageKartuHasilStudis::route('/{mahasiswaId}'),
+            'mahasiswa' => Pages\KrsMahasiswa::route('/{record}/mahasiswa'),
         ];
     }
 }

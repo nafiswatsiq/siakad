@@ -39,9 +39,18 @@ class MatkulResource extends Resource
                 Forms\Components\TextInput::make('kuota')
                     ->required()
                     ->numeric(),
-                Forms\Components\TextInput::make('sesi')
+                Forms\Components\Select::make('sesi')
                     ->required()
-                    ->maxLength(255),
+                        ->options([
+                        '08.00 - 09.00' => '08.00 - 09.00',
+                        '09.00 - 10.00' => '09.00 - 10.00',
+                        '10.00 - 11.00' => '10.00 - 11.00',
+                        '11.00 - 12.00' => '11.00 - 12.00',
+                        '13.00 - 14.00' => '13.00 - 14.00',
+                        '14.00 - 15.00' => '14.00 - 15.00',
+                        '15.00 - 16.00' => '15.00 - 16.00',
+                    ])
+                    ->native(false),
                 Forms\Components\Select::make('ruangan_id')
                     ->label('Ruangan')
                     ->relationship('ruangan', 'kode_ruangan')
