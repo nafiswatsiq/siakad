@@ -2,10 +2,11 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\KartuHasilStudiResource\Pages;
-use App\Filament\Resources\KartuHasilStudiResource\RelationManagers;
+use App\Filament\Resources\KartuRencanaStudiResource\Pages;
+use App\Filament\Resources\KartuRencanaStudiResource\RelationManagers;
 use App\Models\KartuHasilStudi;
-use App\Models\NilaiMatkul;
+use App\Models\KartuRencanaStudi;
+use App\Models\Matkul;
 use App\Models\UserMatkul;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -16,12 +17,13 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 
-class KartuHasilStudiResource extends Resource
+class KartuRencanaStudiResource extends Resource
 {
     protected static ?string $model = UserMatkul::class;
-    protected static ?string $modelLabel = "Kartu Hasil Studi";
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $modelLabel = 'Kartu Rencana Studi';
 
     public static function form(Form $form): Form
     {
@@ -38,40 +40,51 @@ class KartuHasilStudiResource extends Resource
 
     public static function table(Table $table): Table
     {
-         return $table
+        return $table
             ->columns([
                 Tables\Columns\TextColumn::make('index')
                 ->label('No')
                 ->rowIndex(),
                 Tables\Columns\TextColumn::make('matkul.kode_matkul')
-                ->label('Kode Matkul')
+                ->label('Kode Mata Kuliah')
                 ->searchable(),
                 Tables\Columns\TextColumn::make('matkul.nama')
-                ->label('Nama Mata Kuliah')
+                ->label('Mata Kuliah')
                 ->searchable(),
                 Tables\Columns\TextColumn::make('matkul.sks')
                 ->label('SKS')
-                ->searchable(),
+                ->numeric()
+                ->sortable(),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\EditAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+                Tables\Actions\BulkActionGroup::make
+                ([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            // untuk memanggil footer
+            // ->contentFooter(view('filament.krs.footer'))
+            // ->emptyStateHeading('Tidak ada mata kuliah terdaftar') 
+            // ->paginated([10, 25, 50, 'all'])
+            ;
+    }
+
+    public static function canCreate(): bool
+    {
+        return false;
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageKartuHasilStudis::route('/'),
-            'mahasiswa' => Pages\ManageKartuHasilStudis::route('/{mahasiswaId}'),
+            'index' => Pages\ManageKartuRencanaStudis::route('/'),
         ];
     }
 }
